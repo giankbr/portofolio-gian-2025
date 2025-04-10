@@ -1,3 +1,4 @@
+import Analytics from '@/components/analytics';
 import Navbar from '@/components/navbar';
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
@@ -22,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Analytics />
+      </head>
       <body className={outfit.className}>
         <ThemeProvider>
           <Navbar />
