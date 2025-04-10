@@ -170,7 +170,7 @@ export default function Home() {
 
         {/* Spotify Section */}
         <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 spotify-section" ref={spotifyRef}>
-          <h2 className="text-3xl font-bold mb-10">My Top Tracks on Spotify</h2>
+          <h2 className="text-3xl font-bold mb-10">My Music</h2>
           <SpotifyTracks />
         </div>
 
