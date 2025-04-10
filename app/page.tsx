@@ -5,7 +5,7 @@ import SpotifyTracks from '@/components/spotify-tracks';
 import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, Download, Github } from 'lucide-react';
+import { ArrowUpRight, Calendar, Download, Github } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
@@ -106,10 +106,24 @@ export default function Home() {
         <div className="relative py-20 md:py-32 min-h-[400px]" ref={heroRef}>
           <GridBackground />
           <div className="relative z-10">
+            {/* Available button positioned above heading */}
+            <div className="mb-6 hero-buttons">
+              <Button className="font-outfit bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-500 dark:hover:bg-emerald-500/20 rounded-full px-4 py-2 text-base flex items-center gap-2 group border border-emerald-600/20 dark:border-emerald-500/20">
+                <span className="relative">
+                  Available for Projects
+                  <span className="absolute -right-3 -top-1 w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                </span>
+                <Calendar className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Main heading */}
             <h1 className="font-outfit text-5xl md:text-7xl font-bold tracking-tight mb-6 hero-heading">
               Building digital <span className="text-purple-500">experiences</span> that make a difference
             </h1>
             <p className="text-xl md:text-2xl font-outfit text-zinc-600 dark:text-zinc-400 max-w-3xl mb-10 hero-subheading">Full-stack Web Developer at Morfotech</p>
+
+            {/* Original buttons without the availability button */}
             <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
               <Button className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 py-6 text-lg flex items-center gap-2 group">
                 <span>Let's Talk</span>
