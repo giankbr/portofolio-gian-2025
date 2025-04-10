@@ -74,7 +74,7 @@ export default function ProjectsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-12">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">Projects</h1>
