@@ -148,31 +148,95 @@ export default function ContactPage() {
       </div>
 
       {/* Footer remains unchanged */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-10 mt-16" ref={footerRef}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 footer-content">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-white dark:bg-black mt-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 footer-content">
+            <div>
+              <div className="mb-6">
+                <p className="text-2xl font-bold text-zinc-800 dark:text-white">Gian Akbar</p>
+                <p className="text-zinc-600 dark:text-zinc-400 mt-2">Full-stack Web Developer</p>
+              </div>
               <p className="text-zinc-600 dark:text-zinc-400">© {new Date().getFullYear()} Gian Akbar. All rights reserved.</p>
             </div>
-            <div className="flex gap-6">
-              <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                Home
-              </Link>
-              <Link href="/about" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                Projects
-              </Link>
-              <Link href="/gear" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                Gear
-              </Link>
-              <Link href="/contact" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                Contact
-              </Link>
+
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Navigation</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/about" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Projects
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/gear" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Gear
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Contact
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Connect</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="https://github.com/giankbr"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                    >
+                      GitHub
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://linkedin.com/in/gianakbar"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                    >
+                      LinkedIn
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://twitter.com/gianakbr"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                    >
+                      Twitter
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:gian@example.com" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Email
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div className="mt-6 text-center md:text-right text-zinc-500">Crafted with ❤️</div>
+
+          <div className="border-t border-zinc-200 dark:border-zinc-800 pt-8 mt-12 text-center">
+            <p className="text-zinc-500 dark:text-zinc-500 text-sm">Crafted with ❤️</p>
+          </div>
         </div>
       </footer>
     </div>
