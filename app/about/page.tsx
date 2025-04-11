@@ -146,7 +146,7 @@ export default function AboutPage() {
                       </svg>
                     </a>
                     <a
-                      href="https://linkedin.com/in/gianakbar"
+                      href="https://www.linkedin.com/in/giannkbr/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-500 transition-colors"
