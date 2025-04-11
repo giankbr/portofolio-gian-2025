@@ -107,13 +107,20 @@ export default function AboutPage() {
             {/* Left column - Image with decorative elements */}
             <div className="lg:col-span-5 relative hero-content">
               <div className="relative z-10">
-                <div className="aspect-square w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl border-4 border-white dark:border-zinc-800">
-                  <Image src="/profile.jpg" alt="Gian Akbar" width={500} height={500} className="w-full h-full object-cover" priority />
+                <div className="relative aspect-square w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden group">
+                  {/* Main image with shadow instead of colored border */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800 rounded-2xl shadow-lg"></div>
+                  <div className="absolute inset-1 bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-inner">
+                    <Image src="/fotofoto.jpeg" alt="Gian Akbar" width={500} height={500} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" priority />
+                  </div>
                 </div>
 
-                {/* Decorative elements */}
-                <div className="hidden lg:block absolute -bottom-6 -left-6 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
-                <div className="hidden lg:block absolute -top-6 -right-6 w-24 h-24 bg-purple-500/20 rounded-full blur-xl"></div>
+                {/* Decorative shadow elements */}
+                <div className="hidden lg:block absolute -bottom-6 -left-6 w-32 h-32 bg-zinc-500/10 dark:bg-zinc-400/5 rounded-full blur-2xl"></div>
+                <div className="hidden lg:block absolute -top-6 -right-6 w-24 h-24 bg-zinc-500/10 dark:bg-zinc-400/5 rounded-full blur-xl"></div>
+
+                {/* Additional drop shadow for the entire image container */}
+                <div className="absolute inset-0 rounded-2xl shadow-2xl opacity-30 -z-10"></div>
               </div>
 
               {/* Contact card - Fixed positioning */}
