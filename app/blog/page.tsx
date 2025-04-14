@@ -1,228 +1,225 @@
 'use client';
 
-import { GridBackground } from '@/components/grid-background';
-import SpotifyTracks from '@/components/spotify-tracks';
-import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, Calendar, Download, Github } from 'lucide-react';
+import { Calendar, ChevronRight, Clock, Search } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Home() {
-  // Refs for animation targets
-  const heroRef = useRef(null);
-  const aboutRef = useRef(null);
-  const spotifyRef = useRef(null);
-  const projectsRef = useRef(null);
-  const footerRef = useRef(null);
+// Mock blog data - Replace with actual data fetching
+const blogPosts = [
+  {
+    id: 1,
+    title: 'Building a Modern Portfolio with Next.js and Tailwind CSS',
+    excerpt: 'Learn how to create a professional portfolio website using Next.js 14 and Tailwind CSS with dark mode support.',
+    coverImage: '/blog/portfolio.jpg',
+    date: 'April 10, 2025',
+    readTime: '5 min read',
+    category: 'Web Development',
+    slug: 'building-portfolio-nextjs-tailwind',
+  },
+  {
+    id: 2,
+    title: 'The Power of Server Components in Next.js',
+    excerpt: 'Exploring how Server Components can dramatically improve performance in your Next.js applications.',
+    coverImage: '/blog/server-components.jpg',
+    date: 'April 5, 2025',
+    readTime: '7 min read',
+    category: 'React',
+    slug: 'power-of-server-components',
+  },
+  {
+    id: 3,
+    title: 'Creating Smooth Animations with GSAP',
+    excerpt: 'A deep dive into using GSAP for creating engaging and performant animations on your website.',
+    coverImage: '/blog/gsap.jpg',
+    date: 'March 28, 2025',
+    readTime: '6 min read',
+    category: 'Animation',
+    slug: 'smooth-animations-gsap',
+  },
+  {
+    id: 4,
+    title: 'Responsive Design Best Practices in 2025',
+    excerpt: 'The latest techniques and approaches for building truly responsive websites that work across all devices.',
+    coverImage: '/blog/responsive.jpg',
+    date: 'March 20, 2025',
+    readTime: '8 min read',
+    category: 'CSS',
+    slug: 'responsive-design-best-practices',
+  },
+  {
+    id: 5,
+    title: 'Getting Started with TypeScript in React Projects',
+    excerpt: 'A beginner-friendly guide to adding TypeScript to your React applications for better type safety.',
+    coverImage: '/blog/typescript.jpg',
+    date: 'March 15, 2025',
+    readTime: '10 min read',
+    category: 'TypeScript',
+    slug: 'typescript-react-guide',
+  },
+  {
+    id: 6,
+    title: 'Building Custom Hooks in React',
+    excerpt: 'Learn how to create reusable custom hooks to share logic across your React components.',
+    coverImage: '/blog/react-hooks.jpg',
+    date: 'March 8, 2025',
+    readTime: '6 min read',
+    category: 'React',
+    slug: 'building-custom-hooks',
+  },
+];
+
+// Categories for filtering
+const categories = ['All', 'Web Development', 'React', 'Animation', 'CSS', 'TypeScript'];
+
+export default function BlogPage() {
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredPosts = blogPosts.filter((post) => {
+    // Filter by category
+    const categoryMatch = activeCategory === 'All' || post.category === activeCategory;
+
+    // Filter by search query
+    const searchMatch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return categoryMatch && searchMatch;
+  });
 
   useEffect(() => {
-    // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero section animations
-    const heroTimeline = gsap.timeline();
-    heroTimeline
-      .fromTo('.hero-heading', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
-      .fromTo('.hero-subheading', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-      .fromTo('.hero-buttons > *', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: 'power3.out' }, '-=0.4');
-
-    // About section animations
+    // Blog post cards animation
     gsap.fromTo(
-      '.about-content',
-      { opacity: 0, y: 50 },
-      {
-        scrollTrigger: {
-          trigger: '.about-section',
-          start: 'top 80%',
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.3,
-        ease: 'power3.out',
-      }
-    );
-
-    // Spotify section animation
-    gsap.fromTo(
-      '.spotify-section',
-      { opacity: 0 },
-      {
-        scrollTrigger: {
-          trigger: '.spotify-section',
-          start: 'top 75%',
-        },
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out',
-      }
-    );
-
-    // Project card animations
-    gsap.fromTo(
-      '.project-card',
+      '.blog-card',
       { opacity: 0, y: 30 },
       {
-        scrollTrigger: {
-          trigger: '.projects-section',
-          start: 'top 70%',
-        },
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        stagger: 0.2,
+        stagger: 0.1,
+        duration: 0.6,
         ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.blog-grid',
+          start: 'top 80%',
+        },
       }
     );
 
-    // Footer animation
-    gsap.fromTo(
-      '.footer-content',
-      { opacity: 0, y: 20 },
-      {
-        scrollTrigger: {
-          trigger: 'footer',
-          start: 'top 90%',
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      }
-    );
-
-    // Cleanup function
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [filteredPosts]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <div className="relative py-20 md:py-32 min-h-[400px]" ref={heroRef}>
-          <GridBackground />
-          <div className="relative z-10">
-            {/* Available button positioned above heading */}
-            <div className="mb-6 hero-buttons">
-              <Button className="font-outfit bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-500 dark:hover:bg-emerald-500/20 rounded-full px-4 py-2 text-base flex items-center gap-2 group border border-emerald-600/20 dark:border-emerald-500/20">
-                <span className="relative">
-                  Available for Projects
-                  <span className="absolute -right-3 -top-1 w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                </span>
-                <Calendar className="w-4 h-4" />
-              </Button>
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
+      {/* Header */}
+      <section className="py-12 bg-zinc-50/50 dark:bg-zinc-900/20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-black to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">Blog</h1>
+            <p className="text-xl text-zinc-600 dark:text-zinc-400">Thoughts, tutorials, and insights about web development, design, and technology.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Search and Filter */}
+      <section className="py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-between items-center mb-8">
+            {/* Search */}
+            <div className="relative w-full md:w-auto md:min-w-80">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-zinc-400" />
+              </div>
+              <input
+                type="text"
+                className="block w-full pl-10 pr-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
 
-            {/* Main heading */}
-            <h1 className="font-outfit text-5xl md:text-7xl font-bold tracking-tight mb-6 hero-heading">
-              Building digital <span className="text-purple-500">experiences</span> that make a difference
-            </h1>
-            <p className="text-xl md:text-2xl font-outfit text-zinc-600 dark:text-zinc-400 max-w-3xl mb-10 hero-subheading">Full-stack Web Developer at Morfotech</p>
-
-            {/* Original buttons without the availability button */}
-            <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
-              <Button className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 py-6 text-lg flex items-center gap-2 group">
-                <span>Let's Talk</span>
-                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </Button>
-              <Button
-                variant="outline"
-                className="font-outfit rounded-full px-6 py-6 text-lg border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2"
-              >
-                <span>Download CV</span>
-                <Download className="w-5 h-5" />
-              </Button>
+            {/* Categories */}
+            <div className="flex overflow-x-auto gap-2 pb-2 w-full md:w-auto max-w-full">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    activeCategory === category ? 'bg-purple-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           </div>
-          {/* Add gradient effect */}
-          <div className="absolute top-1/2 -translate-y-1/2 right-0 w-1/2 h-96 bg-purple-500/10 dark:bg-purple-500/20 blur-3xl rounded-full opacity-50 z-0"></div>
         </div>
+      </section>
 
-        {/* About Section */}
-        <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 about-section" ref={aboutRef}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="about-content">
-              <h2 className="text-3xl font-bold mb-4">Gian Akbar</h2>
-              <div className="flex items-center gap-4 mb-6">
-                <Link href="https://github.com" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">
-                  <Github className="w-6 h-6" />
+      {/* Blog Posts Grid */}
+      <section className="py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
+            {filteredPosts.length > 0 ? (
+              filteredPosts.map((post) => (
+                <Link href={`/blog/${post.slug}`} key={post.id} className="group">
+                  <article className="blog-card h-full bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-zinc-100 dark:border-zinc-800">
+                    <div className="relative h-52 overflow-hidden">
+                      <Image src={post.coverImage} alt={post.title} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" width={600} height={300} />
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-block bg-purple-600 text-white text-xs font-medium px-3 py-1 rounded-full">{post.category}</span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{post.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{post.readTime}</span>
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-500 transition-colors line-clamp-2">{post.title}</h3>
+                      <p className="text-zinc-600 dark:text-zinc-400 mb-4 line-clamp-3">{post.excerpt}</p>
+                      <div className="flex items-center text-purple-600 dark:text-purple-500 font-medium">
+                        <span>Read article</span>
+                        <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </article>
                 </Link>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center">
+                <p className="text-xl text-zinc-500 dark:text-zinc-400">No blog posts found. Try a different search or category.</p>
               </div>
-            </div>
-            <div className="md:col-span-2 about-content">
-              <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-                I'm Gian, Web developer, tech enthusiast, cat lover, and a coffee lover. I'm passionate about web development. I am excited to bring my knowledge and experience to a dynamic and
-                fast-paced work environment, where I can continue to grow and learn.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="about-content">
-                  <h3 className="text-zinc-500 dark:text-zinc-500 text-sm mb-2">EXPERTISE</h3>
-                  <ul className="space-y-1 text-zinc-700 dark:text-zinc-300">
-                    <li>Frontend Development</li>
-                    <li>Backend Development</li>
-                    <li>Responsive Design</li>
-                    <li>API Integration</li>
-                  </ul>
-                </div>
-                <div className="about-content">
-                  <h3 className="text-zinc-500 dark:text-zinc-500 text-sm mb-2">TECHNOLOGIES</h3>
-                  <ul className="space-y-1 text-zinc-700 dark:text-zinc-300">
-                    <li>React / Next.js</li>
-                    <li>Node.js</li>
-                    <li>TypeScript</li>
-                    <li>Tailwind CSS</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
+      </section>
 
-        {/* Spotify Section */}
-        <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 spotify-section" ref={spotifyRef}>
-          <h2 className="text-3xl font-bold mb-10">My Music</h2>
-          <SpotifyTracks />
-        </div>
-
-        {/* Projects Section */}
-        <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 projects-section" ref={projectsRef}>
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl font-bold">Recent Projects</h2>
-            <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-2 group">
-              <span>View All</span>
-              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Project Card 1 */}
-            <div className="group project-card">
-              <div className="aspect-video bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-hidden mb-4">
-                <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-700">
-                  <span className="text-lg">Project Image</span>
-                </div>
-              </div>
-              <h3 className="text-xl font-medium mb-2 group-hover:text-purple-500 transition-colors">Project Title</h3>
-              <p className="text-zinc-600 dark:text-zinc-400">A short description of the project and technologies used.</p>
-            </div>
-
-            {/* Project Card 2 */}
-            <div className="group project-card">
-              <div className="aspect-video bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-hidden mb-4">
-                <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-700">
-                  <span className="text-lg">Project Image</span>
-                </div>
-              </div>
-              <h3 className="text-xl font-medium mb-2 group-hover:text-purple-500 transition-colors">Project Title</h3>
-              <p className="text-zinc-600 dark:text-zinc-400">A short description of the project and technologies used.</p>
-            </div>
+      {/* Newsletter Section - Reduced bottom margin */}
+      <section className="py-16 bg-zinc-50 dark:bg-zinc-900/30">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Subscribe to the Newsletter</h2>
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8">Get the latest articles and updates delivered directly to your inbox.</p>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+            <input
+              type="email"
+              placeholder="Your email address"
+              className="flex-grow px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors">Subscribe</button>
           </div>
         </div>
-      </div>
+      </section>
 
       <footer className="bg-white dark:bg-zinc-900/20 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
