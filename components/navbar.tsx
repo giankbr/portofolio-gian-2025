@@ -42,7 +42,7 @@ export default function Navbar() {
     { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
     { name: 'Gear', href: '/gear' },
-    // { name: 'Blog', href: '/blog' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ];
 

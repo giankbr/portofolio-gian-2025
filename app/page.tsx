@@ -5,17 +5,19 @@ import SpotifyTracks from '@/components/spotify-tracks';
 import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, Calendar, Download, Github } from 'lucide-react';
+import { ArrowUpRight, Download, Github } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 export default function Home() {
   // Refs for animation targets
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef(null);
   const spotifyRef = useRef(null);
   const projectsRef = useRef(null);
   const footerRef = useRef(null);
+  const codeBlockRef = useRef<HTMLDivElement>(null);
+  const floatingElementsRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -93,53 +95,228 @@ export default function Home() {
       }
     );
 
+    // Animate the code block
+    if (codeBlockRef.current) {
+      gsap.fromTo(
+        codeBlockRef.current,
+        {
+          y: 30,
+          opacity: 0,
+          scale: 0.95,
+          rotateY: -10,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          rotateY: 0,
+          duration: 1.2,
+          delay: 0.3,
+          ease: 'power3.out',
+        }
+      );
+
+      // Lines of code animation
+      const codeLines = codeBlockRef.current.querySelectorAll('.code-line');
+      gsap.fromTo(
+        codeLines,
+        {
+          x: -10,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          delay: 0.8,
+          ease: 'power2.out',
+        }
+      );
+    }
+
+    // Animate the floating elements
+    if (floatingElementsRef.current.length) {
+      // Initial animation
+      gsap.fromTo(
+        floatingElementsRef.current,
+        {
+          y: 40,
+          opacity: 0,
+          rotation: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          rotation: (i) => (i % 2 === 0 ? 12 : -12),
+          duration: 1.2,
+          stagger: 0.2,
+          delay: 1,
+          ease: 'elastic.out(1, 0.3)',
+        }
+      );
+
+      // Continuous floating animation
+      floatingElementsRef.current.forEach((el, i) => {
+        const direction = i % 2 === 0 ? 1 : -1;
+
+        gsap.to(el, {
+          y: direction * 10,
+          rotation: direction * (i % 2 === 0 ? 14 : -14),
+          duration: 2 + i * 0.2,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: i * 0.2,
+        });
+      });
+    }
+
     // Cleanup function
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      gsap.killTweensOf(codeBlockRef.current);
+      gsap.killTweensOf(codeBlockRef.current?.querySelectorAll('.code-line'));
+      floatingElementsRef.current.forEach((el) => gsap.killTweensOf(el));
     };
   }, []);
+
+  // Add floating element ref
+  const addFloatingRef = (el: HTMLDivElement) => {
+    if (el && !floatingElementsRef.current.includes(el)) {
+      floatingElementsRef.current.push(el);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <div className="relative py-20 md:py-32 min-h-[400px]" ref={heroRef}>
+        {/* Redesigned Hero Section */}
+        <div className="relative pt-20 pb-32 md:pt-28 md:pb-40 min-h-[600px]" ref={heroRef}>
           <GridBackground />
-          <div className="relative z-10">
-            {/* Available button positioned above heading */}
-            <div className="mb-6 hero-buttons">
-              <Button className="font-outfit bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-500 dark:hover:bg-emerald-500/20 rounded-full px-4 py-2 text-base flex items-center gap-2 group border border-emerald-600/20 dark:border-emerald-500/20">
+
+          {/* Left content column */}
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-7 lg:col-span-6">
+              {/* Status indicator */}
+              <div className="mb-8 hero-buttons">
+                <div className="inline-flex items-center gap-1.5 bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/20 dark:border-emerald-500/20 px-3 py-1.5 rounded-full">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Available for Projects</span>
+                </div>
+              </div>
+
+              {/* Main heading with improved typography */}
+              <h1 className="font-outfit text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 hero-heading leading-tight">
+                Building <span className="text-purple-500">digital</span> experiences that{' '}
                 <span className="relative">
-                  Available for Projects
-                  <span className="absolute -right-3 -top-1 w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                  matter
+                  <svg className="absolute inset-x-0 bottom-1 w-full h-3 text-purple-500/30 dark:text-purple-500/20" viewBox="0 0 100 12" preserveAspectRatio="none">
+                    <path d="M0,0 Q50,12 100,0" stroke="currentColor" strokeWidth="8" fill="none" />
+                  </svg>
                 </span>
-                <Calendar className="w-4 h-4" />
-              </Button>
+              </h1>
+
+              {/* Enhanced subheading */}
+              <div className="flex items-center gap-3 mb-8 hero-subheading">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                  <span className="text-white font-bold">G</span>
+                </div>
+                <div>
+                  <p className="text-xl md:text-2xl font-outfit text-zinc-700 dark:text-zinc-300">Full-stack Web Developer</p>
+                  <p className="text-zinc-600 dark:text-zinc-400">at Morfotech</p>
+                </div>
+              </div>
+
+              {/* CTA buttons with improved layout */}
+              <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
+                <Button className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 py-6 text-lg flex items-center gap-2 group shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all">
+                  <span>Let's Talk</span>
+                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="font-outfit rounded-full px-7 py-6 text-lg border-zinc-300 dark:border-zinc-700 bg-white/80 dark:bg-black/50 backdrop-blur-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600 flex items-center gap-2"
+                >
+                  <span>Download CV</span>
+                  <Download className="w-5 h-5" />
+                </Button>
+              </div>
             </div>
 
-            {/* Main heading */}
-            <h1 className="font-outfit text-5xl md:text-7xl font-bold tracking-tight mb-6 hero-heading">
-              Building digital <span className="text-purple-500">experiences</span> that make a difference
-            </h1>
-            <p className="text-xl md:text-2xl font-outfit text-zinc-600 dark:text-zinc-400 max-w-3xl mb-10 hero-subheading">Full-stack Web Developer at Morfotech</p>
+            {/* Right illustration/image column */}
+            <div className="hidden md:block md:col-span-5 lg:col-span-6 relative hero-image">
+              <div className="aspect-square max-w-md mx-auto relative">
+                {/* Decorative elements */}
+                <div className="absolute -right-6 -top-6 w-24 h-24 bg-purple-500/10 rounded-full filter blur-xl"></div>
+                <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-blue-500/10 rounded-full filter blur-xl"></div>
 
-            {/* Original buttons without the availability button */}
-            <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
-              <Button className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 py-6 text-lg flex items-center gap-2 group">
-                <span>Let's Talk</span>
-                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </Button>
-              <Button
-                variant="outline"
-                className="font-outfit rounded-full px-6 py-6 text-lg border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2"
-              >
-                <span>Download CV</span>
-                <Download className="w-5 h-5" />
-              </Button>
+                {/* Hero image or abstract shape */}
+                <div
+                  ref={codeBlockRef}
+                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 via-zinc-100 to-white dark:from-purple-500/20 dark:via-zinc-800 dark:to-zinc-900 overflow-hidden flex items-center justify-center p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl"
+                >
+                  <div className="relative w-full h-full">
+                    {/* Code snippets illustration or profile image */}
+                    <div className="absolute top-0 left-0 w-full h-full opacity-50 bg-grid-pattern-light dark:bg-grid-pattern-dark"></div>
+                    <div className="absolute inset-4 p-4 bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-lg shadow-inner border border-zinc-200 dark:border-zinc-700">
+                      <div className="flex items-center mb-3">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="text-purple-600 dark:text-purple-400 code-line">
+                          const <span className="text-blue-600 dark:text-blue-400">developer</span> = {`{`}
+                        </div>
+                        <div className="pl-4 code-line">
+                          <span className="text-green-600 dark:text-green-400">name:</span> <span className="text-amber-600 dark:text-amber-400">'Gian Akbar'</span>,
+                        </div>
+                        <div className="pl-4 code-line">
+                          <span className="text-green-600 dark:text-green-400">skills:</span> [<span className="text-amber-600 dark:text-amber-400">'React'</span>,{' '}
+                          <span className="text-amber-600 dark:text-amber-400">'Next.js'</span>, <span className="text-amber-600 dark:text-amber-400">'TypeScript'</span>,{' '}
+                          <span className="text-amber-600 dark:text-amber-400">'Node.js'</span>],
+                        </div>
+                        <div className="pl-4 code-line">
+                          <span className="text-green-600 dark:text-green-400">passion:</span> <span className="text-amber-600 dark:text-amber-400">'Creating amazing web experiences'</span>
+                        </div>
+                        <div className="code-line">{`}`};</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating elements */}
+                <div
+                  ref={addFloatingRef}
+                  className="absolute -right-4 top-1/4 w-12 h-12 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 flex items-center justify-center rotate-12"
+                >
+                  <span className="text-2xl">✨</span>
+                </div>
+                <div
+                  ref={addFloatingRef}
+                  className="absolute -left-2 bottom-1/3 w-10 h-10 bg-white dark:bg-zinc-800 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 flex items-center justify-center -rotate-12"
+                >
+                  <span className="text-xl">🚀</span>
+                </div>
+                <div
+                  ref={addFloatingRef}
+                  className="absolute right-1/4 bottom-0 w-14 h-14 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 flex items-center justify-center rotate-6 overflow-hidden"
+                >
+                  <span className="text-3xl">💻</span>
+                </div>
+              </div>
             </div>
           </div>
-          {/* Add gradient effect */}
-          <div className="absolute top-1/2 -translate-y-1/2 right-0 w-1/2 h-96 bg-purple-500/10 dark:bg-purple-500/20 blur-3xl rounded-full opacity-50 z-0"></div>
+
+          {/* Enhanced background effects */}
+          <div className="absolute top-1/3 -translate-y-1/2 right-0 w-1/2 h-96 bg-gradient-to-r from-purple-500/10 to-blue-500/10 dark:from-purple-500/20 dark:to-blue-500/20 blur-3xl rounded-full opacity-60 z-0"></div>
+          <div className="absolute top-2/3 left-0 w-1/3 h-64 bg-gradient-to-r from-amber-500/10 to-yellow-500/5 dark:from-amber-500/10 dark:to-yellow-500/5 blur-3xl rounded-full opacity-60 z-0"></div>
         </div>
 
         {/* About Section */}
