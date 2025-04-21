@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function GearPage() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({
-    macbook: false,
+    macbook: true,
     macmini: false,
     iphone: false,
     kawasaki: false,
@@ -69,7 +69,7 @@ export default function GearPage() {
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <span className="text-zinc-700 dark:text-zinc-300 font-medium min-w-36">Laptop (Office)</span>
-                        <span className="text-zinc-600 dark:text-zinc-400">Asus VivoBook 15</span>
+                        <span className="text-zinc-600 dark:text-zinc-400">Macbook Pro M4</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-zinc-700 dark:text-zinc-300 font-medium min-w-36">Laptop (Personal)</span>
@@ -221,16 +221,17 @@ export default function GearPage() {
                       </button>
                     </li>
                     <li>
-                      <button onClick={() => toggleItem('macbook')} className="w-full flex items-center gap-3 group">
+                      <button onClick={() => toggleItem('macbook')} className="w-full flex items-start gap-3 group">
                         <div
-                          className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                          className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center border-2 transition-colors ${
                             checkedItems.macbook ? 'bg-purple-500 border-purple-500' : 'border-zinc-300 dark:border-zinc-700 group-hover:border-purple-500'
                           }`}
                         >
                           {checkedItems.macbook && <Check className="w-4 h-4 text-white" />}
                         </div>
                         <span className={`text-lg transition-colors ${checkedItems.macbook ? 'line-through text-zinc-500 dark:text-zinc-500' : 'text-zinc-700 dark:text-zinc-300'}`}>
-                          Macbook Pro M4
+                          Macbook Pro M4 <br />
+                          <span className="text-sm text-zinc-500 dark:text-zinc-500">(disponsorin kantor)</span>
                         </span>
                       </button>
                     </li>
