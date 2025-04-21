@@ -139,7 +139,7 @@ export default function NowPlaying() {
 
             {/* Album art container */}
             <motion.div whileHover={{ scale: 1.08 }} className="rounded-md overflow-hidden h-full w-full">
-              {/* Spinning album */}
+              {/* Spinning album with fallback */}
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{
@@ -147,9 +147,30 @@ export default function NowPlaying() {
                   repeat: Infinity,
                   ease: 'linear',
                 }}
-                className="h-full w-full relative"
+                className="h-full w-full relative bg-zinc-800"
               >
-                <Image src={data.albumImageUrl!} alt={data.album!} width={48} height={48} className="rounded-md shadow-sm" />
+                {data.albumImageUrl ? (
+                  <Image
+                    src={data.albumImageUrl}
+                    alt={data.album || 'Album cover'}
+                    width={48}
+                    height={48}
+                    className="rounded-md shadow-sm object-cover h-full w-full"
+                    priority
+                    onError={(e) => {
+                      // Fallback to a music icon if image fails to load
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-800 to-violet-600">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                      <path d="M9 18V5l12-2v13"></path>
+                      <circle cx="6" cy="18" r="3"></circle>
+                      <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                  </div>
+                )}
               </motion.div>
             </motion.div>
 
