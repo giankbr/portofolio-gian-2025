@@ -2,7 +2,7 @@
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Check, Code, Coffee, ExternalLink, Laptop, Music, Star } from 'lucide-react';
+import { Code, Coffee, ExternalLink, Laptop, Music, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -193,7 +193,7 @@ export default function GearPage() {
                 </div>
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-900/10 rounded-lg p-6 shadow-sm">
                   <p className="text-zinc-600 dark:text-zinc-400 mb-6">Things I'm planning to get or accomplish. Check them off as I go!</p>
-                  <ul className="space-y-4">
+                  {/* <ul className="space-y-4">
                     <li>
                       <button onClick={() => toggleItem('utang')} className="w-full flex items-center gap-3 group">
                         <div
@@ -289,7 +289,7 @@ export default function GearPage() {
                         </span>
                       </button>
                     </li>
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
               <div className="gear-section">
