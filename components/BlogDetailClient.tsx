@@ -140,208 +140,209 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cover Image */}
-        {post.coverImage && (
-          <div className="relative w-full h-[400px] mb-10 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/placeholder.jpg';
-              }}
-            />
-          </div>
-        )}
-        {/* Author, date, title */}
-        <div className="flex flex-row items-center gap-4 mb-8">
-          <Image src={post.author?.avatar || '/fotofoto.jpeg'} alt={post.author?.name || 'Author'} width={56} height={56} className="rounded-full object-cover flex-shrink-0" />
-          <div className="flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <div className="flex-1">
-                <h2 className="font-bold text-lg text-zinc-800 dark:text-white">{post.author?.name || 'Gian Akbar'}</h2>
-                <div className="text-zinc-500 dark:text-zinc-400 text-sm">{post.author?.title || 'Full-stack Developer'}</div>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm">
-                <Calendar className="h-4 w-4" />
-                <span>{post.date}</span>
+    <>
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Cover Image */}
+          {post.coverImage && (
+            <div className="relative w-full h-[400px] mb-10 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/placeholder.jpg';
+                }}
+              />
+            </div>
+          )}
+          {/* Author, date, title */}
+          <div className="flex flex-row items-center gap-4 mb-8">
+            <Image src={post.author?.avatar || '/fotofoto.jpeg'} alt={post.author?.name || 'Author'} width={56} height={56} className="rounded-full object-cover flex-shrink-0" />
+            <div className="flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="flex-1">
+                  <h2 className="font-bold text-lg text-zinc-800 dark:text-white">{post.author?.name || 'Gian Akbar'}</h2>
+                  <div className="text-zinc-500 dark:text-zinc-400 text-sm">{post.author?.title || 'Full-stack Developer'}</div>
+                </div>
+                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm">
+                  <Calendar className="h-4 w-4" />
+                  <span>{post.date}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900 dark:text-white leading-tight">{post.title}</h1>
-        {/* Share buttons for mobile */}
-        <div className="flex lg:hidden items-center gap-3 mb-6 justify-center">
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">Share:</span>
-          <button
-            onClick={() => handleShare('twitter')}
-            className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-            aria-label="Share on Twitter"
-          >
-            <Twitter className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleShare('linkedin')}
-            className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-            aria-label="Share on LinkedIn"
-          >
-            <Linkedin className="h-5 w-5" />
-          </button>
-          <button onClick={() => handleShare('copy')} className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors" aria-label="Copy link">
-            <LinkIcon className="h-5 w-5" />
-          </button>
-        </div>
-        <div className="flex flex-row gap-0">
-          {/* Share sidebar for desktop */}
-          <div className="hidden lg:flex flex-col items-center gap-4 sticky top-32 h-max mr-8 pt-2">
-            <span className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">Share</span>
+          {/* Title */}
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900 dark:text-white leading-tight">{post.title}</h1>
+          {/* Share buttons for mobile */}
+          <div className="flex lg:hidden items-center gap-3 mb-6 justify-center">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Share:</span>
             <button
               onClick={() => handleShare('twitter')}
-              className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               aria-label="Share on Twitter"
             >
               <Twitter className="h-5 w-5" />
             </button>
             <button
               onClick={() => handleShare('linkedin')}
-              className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               aria-label="Share on LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
             </button>
-            <button onClick={() => handleShare('copy')} className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors" aria-label="Copy link">
+            <button onClick={() => handleShare('copy')} className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors" aria-label="Copy link">
               <LinkIcon className="h-5 w-5" />
             </button>
           </div>
-          {/* Article content */}
-          <article className="flex-1 w-full">
-            <div ref={contentRef} className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-bold prose-p:text-zinc-600 dark:prose-p:text-zinc-400">
-              <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
+          <div className="flex flex-row gap-0">
+            {/* Share sidebar for desktop */}
+            <div className="hidden lg:flex flex-col items-center gap-4 sticky top-32 h-max mr-8 pt-2">
+              <span className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">Share</span>
+              <button
+                onClick={() => handleShare('twitter')}
+                className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                aria-label="Share on Twitter"
+              >
+                <Twitter className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => handleShare('linkedin')}
+                className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                aria-label="Share on LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </button>
+              <button onClick={() => handleShare('copy')} className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors" aria-label="Copy link">
+                <LinkIcon className="h-5 w-5" />
+              </button>
             </div>
-          </article>
+            {/* Article content */}
+            <article className="flex-1 w-full">
+              <div ref={contentRef} className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-bold prose-p:text-zinc-600 dark:prose-p:text-zinc-400">
+                <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
+              </div>
+            </article>
+          </div>
         </div>
-        {/* Footer */}
-        <footer className="bg-white dark:bg-zinc-900/20 border-t border-zinc-200 dark:border-zinc-800 mt-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
-              <div className="md:col-span-5 lg:col-span-4">
-                <div className="flex items-center mb-6">
-                  <div className="bg-gradient-to-r from-purple-600 to-purple-800 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
-                    <span className="text-white font-bold text-xl">G</span>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-zinc-800 dark:text-white">Gian Akbar</h2>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Full-stack Web Developer</p>
-                  </div>
+      </div>
+      <footer className="bg-white dark:bg-zinc-900/20 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
+            <div className="md:col-span-5 lg:col-span-4">
+              <div className="flex items-center mb-6">
+                <div className="bg-gradient-to-r from-purple-600 to-purple-800 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                  <span className="text-white font-bold text-xl">G</span>
                 </div>
-                <p className="text-zinc-600 dark:text-zinc-400 mb-6">Building modern web experiences with a focus on performance, accessibility, and beautiful design.</p>
-                <p className="text-zinc-500 dark:text-zinc-500 text-sm">© {new Date().getFullYear()} Gian Akbar. All rights reserved.</p>
+                <div>
+                  <h2 className="text-2xl font-bold text-zinc-800 dark:text-white">Gian Akbar</h2>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm">Full-stack Web Developer</p>
+                </div>
               </div>
-              <div className="hidden md:block md:col-span-1 lg:col-span-2"></div>
-              <div className="md:col-span-3">
-                <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Navigation</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/about" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      About
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Projects
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/shorts" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Shorts
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/gear" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Gear
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="md:col-span-3">
-                <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Connect</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      href="https://github.com/giankbr"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
-                    >
-                      GitHub
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.linkedin.com/in/giannkbr/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
-                    >
-                      LinkedIn
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://twitter.com/gianakbr"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
-                    >
-                      Twitter
-                    </a>
-                  </li>
-                  <li>
-                    <a href="mailto:gian@example.com" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                      Email
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <p className="text-zinc-600 dark:text-zinc-400 mb-6">Building modern web experiences with a focus on performance, accessibility, and beautiful design.</p>
+              <p className="text-zinc-500 dark:text-zinc-500 text-sm">© {new Date().getFullYear()} Gian Akbar. All rights reserved.</p>
             </div>
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 flex flex-col sm:flex-row justify-between items-center">
-              <div className="text-zinc-500 dark:text-zinc-500 text-sm mb-4 sm:mb-0">
-                <Link href="/privacy" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                  Privacy Policy
+            <div className="hidden md:block md:col-span-1 lg:col-span-2"></div>
+            <div className="md:col-span-3">
+              <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Navigation</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    About
+                  </Link>
+                </li>
+                {/* <li>
+                <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                  Projects
                 </Link>
-                <span className="mx-2">•</span>
-                <Link href="/terms" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                  Terms of Service
-                </Link>
-              </div>
-              <div className="text-zinc-500 dark:text-zinc-500 text-sm flex items-center">
-                <span>Crafted with</span>
-                <svg className="w-4 h-4 mx-1 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-                <span>in Jakarta</span>
-              </div>
+              </li> */}
+                <li>
+                  <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shorts" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    Shorts
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/gear" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    Gear
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="md:col-span-3">
+              <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Connect</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="https://github.com/giankbr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
+                  >
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/giannkbr/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://twitter.com/gianakbr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
+                  >
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:gian@example.com" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                    Email
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-        </footer>
-      </div>
-    </div>
+          <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 flex flex-col sm:flex-row justify-between items-center">
+            <div className="text-zinc-500 dark:text-zinc-500 text-sm mb-4 sm:mb-0">
+              <Link href="/privacy" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                Privacy Policy
+              </Link>
+              <span className="mx-2">•</span>
+              <Link href="/terms" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                Terms of Service
+              </Link>
+            </div>
+            <div className="text-zinc-500 dark:text-zinc-500 text-sm flex items-center">
+              <span>Crafted with</span>
+              <svg className="w-4 h-4 mx-1 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+              <span>in Jakarta</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 };
 
