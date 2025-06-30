@@ -230,7 +230,7 @@ export default function GearPage() {
                         </div>
                         <span className={`text-lg transition-colors ${checkedItems.macbook ? 'line-through text-zinc-500 dark:text-zinc-500' : 'text-zinc-700 dark:text-zinc-300'}`}>
                           Macbook Pro M4 <br />
-                          <span className="text-sm text-zinc-500 dark:text-zinc-500">(disponsorin kantor)</span>
+                          {/* <span className="text-sm text-zinc-500 dark:text-zinc-500">(disponsorin kantor)</span> */}
                         </span>
                       </button>
                     </li>
