@@ -319,7 +319,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                       Isi form di bawah untuk mendapatkan file resume terbaru saya.
                       <br />
                       <span className="text-yellow-500 font-semibold">Lebih suka ngobrol langsung?</span>{' '}
-                      <a href="https://linkedin.com/in/giankbr" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold underline">
+                      <a href="https://www.linkedin.com/in/giannkbr/" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold underline">
                         Connect via LinkedIn
                       </a>
                       !
@@ -619,7 +619,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                 </li>
                 <li>
                   <a
-                    href="https://www.linkedin.com/in/giannkbr"
+                    href="https://www.linkedin.com/in/giannkbr/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"

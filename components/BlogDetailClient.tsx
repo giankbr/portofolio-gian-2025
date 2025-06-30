@@ -60,7 +60,7 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
         break;
       case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        window.open(`https://www.linkedin.com/in/giannkbr/`, '_blank');
         break;
       case 'copy':
         navigator.clipboard.writeText(url).then(() => {
@@ -294,7 +294,7 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
                   </li>
                   <li>
                     <a
-                      href="https://www.linkedin.com/in/giannkbr"
+                      href="https://www.linkedin.com/in/giannkbr/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
