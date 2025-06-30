@@ -1,117 +1,49 @@
-'use client';
-
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, ChevronRight, Clock, Search } from 'lucide-react';
-import Image from 'next/image';
+import fs from 'fs/promises';
+import matter from 'gray-matter';
+import { ChevronRight, Search } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import path from 'path';
 
-// Mock blog data - Replace with actual data fetching
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Building a Modern Portfolio with Next.js and Tailwind CSS',
-    excerpt: 'Learn how to create a professional portfolio website using Next.js 14 and Tailwind CSS with dark mode support.',
-    coverImage: '/blog/portfolio.jpg',
-    date: 'April 10, 2025',
-    readTime: '5 min read',
-    category: 'Web Development',
-    slug: 'building-portfolio-nextjs-tailwind',
-  },
-  {
-    id: 2,
-    title: 'The Power of Server Components in Next.js',
-    excerpt: 'Exploring how Server Components can dramatically improve performance in your Next.js applications.',
-    coverImage: '/blog/server-components.jpg',
-    date: 'April 5, 2025',
-    readTime: '7 min read',
-    category: 'React',
-    slug: 'power-of-server-components',
-  },
-  {
-    id: 3,
-    title: 'Creating Smooth Animations with GSAP',
-    excerpt: 'A deep dive into using GSAP for creating engaging and performant animations on your website.',
-    coverImage: '/blog/gsap.jpg',
-    date: 'March 28, 2025',
-    readTime: '6 min read',
-    category: 'Animation',
-    slug: 'smooth-animations-gsap',
-  },
-  {
-    id: 4,
-    title: 'Responsive Design Best Practices in 2025',
-    excerpt: 'The latest techniques and approaches for building truly responsive websites that work across all devices.',
-    coverImage: '/blog/responsive.jpg',
-    date: 'March 20, 2025',
-    readTime: '8 min read',
-    category: 'CSS',
-    slug: 'responsive-design-best-practices',
-  },
-  {
-    id: 5,
-    title: 'Getting Started with TypeScript in React Projects',
-    excerpt: 'A beginner-friendly guide to adding TypeScript to your React applications for better type safety.',
-    coverImage: '/blog/typescript.jpg',
-    date: 'March 15, 2025',
-    readTime: '10 min read',
-    category: 'TypeScript',
-    slug: 'typescript-react-guide',
-  },
-  {
-    id: 6,
-    title: 'Building Custom Hooks in React',
-    excerpt: 'Learn how to create reusable custom hooks to share logic across your React components.',
-    coverImage: '/blog/react-hooks.jpg',
-    date: 'March 8, 2025',
-    readTime: '6 min read',
-    category: 'React',
-    slug: 'building-custom-hooks',
-  },
-];
+// Directory for blog markdown files
+const BLOG_DIR = path.join(process.cwd(), 'public/content/blog');
+
+// BlogPost type for markdown frontmatter
+interface BlogPost {
+  title: string;
+  date: string;
+  coverImage?: string;
+  excerpt: string;
+  slug: string;
+}
+
+// Helper to get all blog posts
+async function getBlogPosts(): Promise<BlogPost[]> {
+  const files = await fs.readdir(BLOG_DIR);
+  const posts = await Promise.all(
+    files
+      .filter((f) => f.endsWith('.md'))
+      .map(async (filename) => {
+        const filePath = path.join(BLOG_DIR, filename);
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const { data, content } = matter(fileContent);
+        return {
+          slug: path.basename(filename, '.md'),
+          title: data.title || filename.replace(/\.md$/, ''),
+          date: data.date || '',
+          coverImage: data.coverImage || '',
+          excerpt: data.excerpt || content.slice(0, 160) + '...',
+        };
+      })
+  );
+  // Sort by date descending
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
 
 // Categories for filtering
 const categories = ['All', 'Web Development', 'React', 'Animation', 'CSS', 'TypeScript'];
 
-export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredPosts = blogPosts.filter((post) => {
-    // Filter by category
-    const categoryMatch = activeCategory === 'All' || post.category === activeCategory;
-
-    // Filter by search query
-    const searchMatch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-
-    return categoryMatch && searchMatch;
-  });
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Blog post cards animation
-    gsap.fromTo(
-      '.blog-card',
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.blog-grid',
-          start: 'top 80%',
-        },
-      }
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [filteredPosts]);
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
@@ -138,8 +70,6 @@ export default function BlogPage() {
                 type="text"
                 className="block w-full pl-10 pr-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
@@ -149,9 +79,8 @@ export default function BlogPage() {
                 <button
                   key={category}
                   className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    activeCategory === category ? 'bg-purple-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                    category === 'All' ? 'bg-purple-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700'
                   }`}
-                  onClick={() => setActiveCategory(category)}
                 >
                   {category}
                 </button>
@@ -165,26 +94,16 @@ export default function BlogPage() {
       <section className="py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
-            {filteredPosts.length > 0 ? (
-              filteredPosts.map((post) => (
-                <Link href={`/blog/${post.slug}`} key={post.id} className="group">
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
                   <article className="blog-card h-full bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-zinc-100 dark:border-zinc-800">
                     <div className="relative h-52 overflow-hidden">
-                      <Image src={post.coverImage} alt={post.title} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" width={600} height={300} />
-                      <div className="absolute top-4 left-4">
-                        <span className="inline-block bg-purple-600 text-white text-xs font-medium px-3 py-1 rounded-full">{post.category}</span>
-                      </div>
+                      {post.coverImage && <img src={post.coverImage} alt={post.title} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />}
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 mb-3">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{post.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          <span>{post.readTime}</span>
-                        </div>
+                        <span>{post.date}</span>
                       </div>
                       <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-500 transition-colors line-clamp-2">{post.title}</h3>
                       <p className="text-zinc-600 dark:text-zinc-400 mb-4 line-clamp-3">{post.excerpt}</p>
@@ -198,7 +117,9 @@ export default function BlogPage() {
               ))
             ) : (
               <div className="col-span-full py-20 text-center">
-                <p className="text-xl text-zinc-500 dark:text-zinc-400">No blog posts found. Try a different search or category.</p>
+                <p className="text-xl text-zinc-500 dark:text-zinc-400">
+                  No blog posts found. Add markdown files to <code>public/content/blog</code> to create posts.
+                </p>
               </div>
             )}
           </div>

@@ -3,10 +3,9 @@
 import { GridBackground } from '@/components/grid-background';
 import SpotifyTracks from '@/components/spotify-tracks';
 import { Button } from '@/components/ui/button';
-import { projects } from '@/data/projects';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, Download, Github } from 'lucide-react';
+import { ArrowUpRight, ChevronRight, Download, Github } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
@@ -191,6 +190,8 @@ export default function Home() {
     }
   };
 
+  const getRandomImage = () => `https://source.unsplash.com/600x300/?technology,web,random,${Math.floor(Math.random() * 10000)}`;
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -289,9 +290,8 @@ export default function Home() {
                           <span className="text-amber-600 dark:text-amber-400">'Nest.js'</span>, <span className="text-amber-600 dark:text-amber-400">'TypeScript'</span>],
                         </div>
                         <div className="pl-4 code-line">
-                          <span className="text-green-600 dark:text-green-400">exploring:</span> [<span className="text-amber-600 dark:text-amber-400">'MERN Stack'</span>,{' '}
-                          <span className="text-amber-600 dark:text-amber-400">'Clean Architecture'</span>, <span className="text-amber-600 dark:text-amber-400">'System Design'</span>
-                          ],
+                          <span className="text-green-600 dark:text-green-400">exploring:</span> [<span className="text-amber-600 dark:text-amber-400">'AI/ML'</span>,{' '}
+                          <span className="text-amber-600 dark:text-amber-400">'DevOps'</span>, <span className="text-amber-600 dark:text-amber-400">'System Design'</span> ],
                         </div>
 
                         {/* <div className="pl-4 code-line">
@@ -381,31 +381,53 @@ export default function Home() {
           <SpotifyTracks />
         </div>
 
-        {/* Projects Section */}
-        <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 projects-section" ref={projectsRef}>
+        {/* Blog Section */}
+        <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 blog-section" ref={projectsRef}>
           <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl font-bold">Recent Projects</h2>
-            {/* <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-2 group">
+            <h2 className="text-3xl font-bold">Latest Blog Posts</h2>
+            {/* <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-2 group">
               <span>View All</span>
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link> */}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects
-              .filter((project) => project.featured)
-              .slice(0, 2)
-              .map((project) => (
-                <Link href={`/projects/${project.id}`} key={project.id} className="group project-card">
-                  <div className="aspect-video bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-hidden mb-4">
-                    <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-700">
-                      {project.image ? <img src={project.image} alt={project.title} className="w-full h-full object-cover" /> : <span className="text-lg">{project.title}</span>}
+            {/* Dummy blog posts, replace with real data if available */}
+            {[
+              {
+                id: 1,
+                title: 'Building a Modern Portfolio with Next.js and Tailwind CSS',
+                excerpt: 'Learn how to create a professional portfolio website using Next.js 14 and Tailwind CSS with dark mode support.',
+                coverImage: '/blog/portfolio.jpg',
+                slug: 'building-portfolio-nextjs-tailwind',
+              },
+              {
+                id: 2,
+                title: 'The Power of Server Components in Next.js',
+                excerpt: 'Exploring how Server Components can dramatically improve performance in your Next.js applications.',
+                coverImage: '/blog/server-components.jpg',
+                slug: 'power-of-server-components',
+              },
+            ].map((post) => (
+              <Link href={`/blog/${post.slug}`} key={post.slug} className="group blog-card">
+                <article className="blog-card h-full bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-zinc-100 dark:border-zinc-800">
+                  <div className="relative h-52 overflow-hidden">
+                    <img src={post.coverImage || getRandomImage()} alt={post.title} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+                      <span>{post.date}</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-500 transition-colors line-clamp-2">{post.title}</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 mb-4 line-clamp-3">{post.excerpt}</p>
+                    <div className="flex items-center text-purple-600 dark:text-purple-500 font-medium">
+                      <span>Read article</span>
+                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
-                  <h3 className="text-xl font-medium mb-2 group-hover:text-purple-500 transition-colors">{project.title}</h3>
-                  <p className="text-zinc-600 dark:text-zinc-400">{project.description}</p>
-                </Link>
-              ))}
+                </article>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
