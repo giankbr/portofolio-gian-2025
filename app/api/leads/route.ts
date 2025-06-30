@@ -1,31 +1,31 @@
-import { promises as fs } from 'fs';
+import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
 
-const CSV_PATH = path.join(process.cwd(), 'data', 'leads.csv');
+// Ganti dengan ID Google Sheet kamu
+const SHEET_ID = 'YOUR_SHEET_ID';
+const SHEET_RANGE = 'Sheet1!A:D'; // Atur sesuai kebutuhan
+
+const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
     const { name, email, message } = await req.json();
-    if (!name || !email) {
-      return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 });
-    }
-    const now = new Date().toISOString();
-    // Escape double quotes in message
-    const safeMessage = (message || '').replace(/"/g, '""');
-    const row = `"${name.replace(/"/g, '""')}","${email.replace(/"/g, '""')}","${safeMessage}","${now}"
-`;
-    let fileExists = false;
-    try {
-      await fs.access(CSV_PATH);
-      fileExists = true;
-    } catch {}
-    if (!fileExists) {
-      // Write header
-      await fs.writeFile(CSV_PATH, 'name,email,message,date\n' + row, 'utf8');
-    } else {
-      await fs.appendFile(CSV_PATH, row, 'utf8');
-    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: SHEET_RANGE,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: [[name, email, message, new Date().toISOString()]],
+      },
+    });
+
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });

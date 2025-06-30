@@ -46,6 +46,7 @@
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "^12.6.3",
+    "googleapis": "^150.0.1",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.7",
     "input-otp": "1.4.1",

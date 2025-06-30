@@ -3,7 +3,7 @@
 import { GridBackground } from '@/components/grid-background';
 import SpotifyTracks from '@/components/spotify-tracks';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -308,11 +308,15 @@ export default function HomeClient({ posts }: { posts: any[] }) {
               {/* Download CV Modal */}
               <Dialog open={openCVModal} onOpenChange={setOpenCVModal}>
                 <DialogContent className="max-w-md rounded-2xl p-8 bg-white dark:bg-zinc-900 shadow-2xl border-0">
-                  <div className="flex flex-col items-center text-center mb-7">
-                    <span className="text-4xl mb-1">👋</span>
-                    <h2 className="text-2xl md:text-3xl font-extrabold mb-2 text-zinc-900 dark:text-white">Interested in my CV?</h2>
-                    <p className="text-zinc-500 text-base mb-1">
-                      Isi form di bawah untuk dapatkan file resume terbaru saya.
+                  <DialogTitle asChild>
+                    <div className="flex flex-col items-center text-center mb-2">
+                      <span className="text-4xl mb-1">👋</span>
+                      <h2 className="text-2xl md:text-3xl font-extrabold mb-2 text-zinc-900 dark:text-white">Request My Latest CV</h2>
+                    </div>
+                  </DialogTitle>
+                  <DialogDescription asChild>
+                    <p className="text-zinc-500 text-base mb-4">
+                      Isi form di bawah untuk mendapatkan file resume terbaru saya.
                       <br />
                       <span className="text-yellow-500 font-semibold">Lebih suka ngobrol langsung?</span>{' '}
                       <a href="https://linkedin.com/in/giankbr" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold underline">
@@ -320,11 +324,11 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                       </a>
                       !
                     </p>
-                  </div>
+                  </DialogDescription>
                   <form onSubmit={handleLeadSubmit} className="space-y-5">
                     <div className="text-left">
                       <label htmlFor="name" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
-                        Nama Lengkap <span className="text-red-500">*</span>
+                        Your fancy name <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="name"
@@ -338,7 +342,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                     </div>
                     <div className="text-left">
                       <label htmlFor="email" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
-                        Email Aktif <span className="text-red-500">*</span>
+                        Your Email <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="email"
@@ -353,7 +357,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                     </div>
                     <div className="text-left">
                       <label htmlFor="message" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
-                        Pesan / Keterangan
+                        Message / Description
                       </label>
                       <textarea
                         id="message"
@@ -615,7 +619,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
                 </li>
                 <li>
                   <a
-                    href="https://linkedin.com/in/gianakbar"
+                    href="https://www.linkedin.com/in/giannkbr"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"

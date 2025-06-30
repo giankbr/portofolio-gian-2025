@@ -228,7 +228,7 @@ export default async function BlogPage() {
                 </li>
                 <li>
                   <a
-                    href="https://linkedin.com/in/giankbr"
+                    href="https://www.linkedin.com/in/giannkbr/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"

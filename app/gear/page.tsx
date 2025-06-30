@@ -6,6 +6,9 @@ import { Check, Code, Coffee, ExternalLink, Laptop, Music, Star } from 'lucide-r
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+const SHEET_ID = '1zwlTGK4NzTvOO3odSSCMs8Gj9FPM7pn1dOK_S6oqwRc';
+const SHEET_RANGE = 'Sheet1!A:D';
+
 export default function GearPage() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({
     macbook: true,
@@ -387,7 +390,7 @@ export default function GearPage() {
                 </li>
                 <li>
                   <a
-                    href="https://linkedin.com/in/gianakbar"
+                    href="https://www.linkedin.com/in/giannkbr"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"
