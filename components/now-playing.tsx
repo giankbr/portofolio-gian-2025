@@ -1,9 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+// Type matches API response
 type NowPlayingData = {
   isPlaying: boolean;
   title?: string;
@@ -11,154 +10,161 @@ type NowPlayingData = {
   album?: string;
   albumImageUrl?: string;
   songUrl?: string;
+  progressMs?: number;
+  durationMs?: number;
 };
 
 export default function NowPlaying() {
   const [data, setData] = useState<NowPlayingData>({ isPlaying: false });
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const fetchNowPlaying = async () => {
+    async function fetchNowPlaying() {
       setLoading(true);
       try {
         const res = await fetch('/api/spotify/now-playing');
-        const newData = await res.json();
-        setData(newData);
+        const json = await res.json();
+        setData(json);
       } catch (err) {
-        console.error('Error fetching now playing:', err);
+        setData({ isPlaying: false });
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     fetchNowPlaying();
-    const intervalId = setInterval(fetchNowPlaying, 30000);
-    return () => clearInterval(intervalId);
+    const interval = setInterval(fetchNowPlaying, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const equalizerVariants = {
-    playing: (i: number) => ({
-      scaleY: [0.3, 1, 0.6, 0.8, 1, 0.4, 0.9, 0.3],
-      backgroundColor: i === 1 ? ['#8b5cf6', '#ec4899', '#8b5cf6'] : undefined,
-      transition: {
-        scaleY: {
-          repeat: Infinity,
-          repeatType: 'loop',
-          duration: 1.8,
-          delay: i * 0.2,
-          ease: 'easeInOut',
-        },
-        backgroundColor: {
-          repeat: Infinity,
-          repeatType: 'reverse',
-          duration: 8,
-          ease: 'easeInOut',
-        },
-      },
-    }),
-    paused: { scaleY: 0.3 },
+  useEffect(() => {
+    setProgress(data.progressMs || 0);
+    if (!data.isPlaying || !data.progressMs) return;
+    let raf: number;
+    let start = Date.now();
+    let base = data.progressMs;
+    function tick() {
+      const elapsed = Date.now() - start;
+      let next = base + elapsed;
+      if (data.durationMs && next > data.durationMs) next = data.durationMs;
+      setProgress(next);
+      if (data.durationMs && next < data.durationMs) {
+        raf = requestAnimationFrame(tick);
+      }
+    }
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [data.isPlaying, data.progressMs, data.durationMs]);
+
+  function msToTime(ms?: number) {
+    if (!ms) return '0:00';
+    const min = Math.floor(ms / 60000);
+    const sec = Math.floor((ms % 60000) / 1000);
+    return `${min}:${sec.toString().padStart(2, '0')}`;
+  }
+
+  const LoadingIcon = () => <div className="animate-spin rounded-full h-10 w-10 border-2 border-purple-500 border-t-transparent"></div>;
+
+  const SpotifyIcon = ({ className = '' }: { className?: string }) => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.062 14.583c-.248 0-.403-.137-.662-.27-1.767-.914-3.988-1.134-6.608-.616-.241.055-.403.082-.541.082-.403 0-.713-.302-.713-.705 0-.378.248-.651.568-.706 3.102-.624 5.704-.357 7.894.95.289.179.434.344.434.705 0 .403-.31.56-.372.56zm.94-2.627c-.303 0-.496-.165-.8-.329-2.016-1.05-5.076-1.35-7.636-.742-.303.068-.496.096-.661.096-.496 0-.868-.372-.868-.868 0-.462.303-.8.696-.868 3.102-.661 6.608-.33 9.102.951.372.22.537.427.537.868 0 .496-.372.892-.37.892zm.855-2.816c-.365 0-.6-.192-.974-.384-2.281-1.188-6.048-1.298-8.22-.715-.365.096-.6.124-.808.124-.6 0-1.048-.448-1.048-1.048 0-.565.365-.972.848-1.072 2.588-.675 6.826-.548 9.612.844.448.268.662.524.662 1.048 0 .6-.448 1.203-1.072 1.203z" />
+    </svg>
+  );
+
+  const EqualizerBar = ({ delay }: { delay: number }) => {
+    const [height, setHeight] = useState(20);
+    useEffect(() => {
+      if (!data.isPlaying) {
+        setHeight(8);
+        return;
+      }
+      const interval = setInterval(() => {
+        setHeight(Math.random() * 32 + 8);
+      }, 300 + delay * 100);
+      return () => clearInterval(interval);
+    }, [data.isPlaying, delay]);
+    return <div className="w-1 bg-gradient-to-t from-purple-600 to-pink-500 rounded-full transition-all duration-300 ease-out" style={{ height: `${height}px` }} />;
   };
 
   const renderAlbumArt = () => {
     if (loading) {
       return (
-        <motion.div
-          animate={{ opacity: [0.5, 0.8, 0.5], rotate: [0, 3, 0, -3, 0] }}
-          transition={{
-            opacity: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-            rotate: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-          }}
-          className="w-full h-full flex items-center justify-center"
-        >
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900">
           <LoadingIcon />
-        </motion.div>
+        </div>
       );
     }
-
     if (data.isPlaying && data.albumImageUrl) {
       return (
-        <motion.div animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 20, duration: 0.8 }} className="w-full h-full">
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} className="h-full w-full relative">
-            <Image
-              src={data.albumImageUrl}
-              alt={data.album || 'Album cover'}
-              width={96}
-              height={96}
-              className="rounded-2xl shadow object-cover h-full w-full"
-              priority
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </motion.div>
-        </motion.div>
+        <div className="w-full h-full relative group">
+          <img src={data.albumImageUrl} alt={data.album || 'Album cover'} className="w-full h-full object-cover rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-xl" />
+        </div>
       );
     }
-
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-800 to-violet-600">
-        <SpotifyIcon className="text-white" />
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-pink-600">
+        <SpotifyIcon className="text-white opacity-70" />
       </div>
     );
   };
 
-  const renderEqualizer = () =>
-    [0, 1, 2, 3].map((i) => (
-      <motion.div
-        key={i}
-        custom={i}
-        variants={equalizerVariants}
-        animate="playing"
-        className="w-[3px] h-6 bg-purple-500 rounded-full origin-bottom"
-        style={{ backgroundColor: i === 1 ? '#8b5cf6' : undefined }}
-      />
-    ));
-
   return (
-    <div className="w-full max-w-none bg-white/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow p-8 flex items-center gap-8">
-      {/* Album / Loading */}
-      <div className="relative w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-purple-500/20 to-zinc-200 dark:to-zinc-800 flex items-center justify-center">
-        {renderAlbumArt()}
-      </div>
-
-      {/* Song Info */}
-      <div className="flex flex-col min-w-0 flex-1">
-        {data.isPlaying ? (
-          <>
-            <a
-              href={data.songUrl!}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-3xl font-bold truncate hover:underline hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-            >
-              {data.title}
-            </a>
-            <span className="text-xl text-zinc-500 dark:text-zinc-400 truncate font-medium mt-1">{data.artist}</span>
-            <div className="flex items-end h-6 gap-1 mt-3">{renderEqualizer()}</div>
-          </>
-        ) : (
-          <div className="flex flex-col items-start justify-center h-full">
-            <span className="text-2xl font-bold text-zinc-700 dark:text-zinc-200">Not Playing</span>
-            <span className="text-base text-zinc-500 dark:text-zinc-400">Spotify</span>
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row items-center gap-6 p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        {/* Album Art */}
+        <div className="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">{renderAlbumArt()}</div>
+        {/* Song Info */}
+        <div className="flex-1 min-w-0 w-full">
+          <div className="flex items-center gap-2 mb-1">
+            <SpotifyIcon className="text-green-500" />
+            <span className="text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-semibold">Now Playing</span>
           </div>
-        )}
+          {data.isPlaying ? (
+            <div>
+              <a
+                href={data.songUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-lg font-bold text-zinc-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200 truncate"
+              >
+                {data.title}
+              </a>
+              <p className="text-sm text-zinc-600 dark:text-zinc-300 truncate mt-0.5">{data.artist}</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{data.album}</p>
+              {/* Equalizer */}
+              <div className="flex items-end gap-1 pt-2">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <EqualizerBar key={i} delay={i} />
+                ))}
+              </div>
+              {/* Progress Bar (Real) */}
+              {data.durationMs && (
+                <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                  <span>{msToTime(progress)}</span>
+                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1 overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 h-1 rounded-full transition-all duration-200"
+                      style={{ width: `${((progress || 0) / (data.durationMs || 1)) * 100}%` }}
+                    ></div>
+                  </div>
+                  <span>{msToTime(data.durationMs)}</span>
+                </div>
+              )}
+            </div>
+          ) : loading ? (
+            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm mt-2">
+              <LoadingIcon />
+              <span>Connecting...</span>
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center h-full">
+              <h3 className="text-base font-bold text-zinc-900 dark:text-white">Nothing Playing</h3>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Start listening on Spotify</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
-
-// Icons
-const LoadingIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-zinc-500">
-    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-    <path d="M9 17l6-5-6-5v10z" fill="currentColor" />
-  </svg>
-);
-
-const SpotifyIcon = ({ className = '' }: { className?: string }) => (
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <path d="M9 18V5l12-2v13"></path>
-    <circle cx="6" cy="18" r="3"></circle>
-    <circle cx="18" cy="16" r="3"></circle>
-  </svg>
-);
