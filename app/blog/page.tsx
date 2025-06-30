@@ -16,6 +16,10 @@ interface BlogPost {
   slug: string;
 }
 
+function getRandomImage() {
+  return `https://source.unsplash.com/600x300/?technology,web,random,${Math.floor(Math.random() * 10000)}`;
+}
+
 // Helper to get all blog posts
 async function getBlogPosts(): Promise<BlogPost[]> {
   const files = await fs.readdir(BLOG_DIR);
@@ -30,7 +34,7 @@ async function getBlogPosts(): Promise<BlogPost[]> {
           slug: path.basename(filename, '.md'),
           title: data.title || filename.replace(/\.md$/, ''),
           date: data.date || '',
-          coverImage: data.coverImage || '',
+          coverImage: data.coverImage || getRandomImage(),
           excerpt: data.excerpt || content.slice(0, 160) + '...',
         };
       })
@@ -224,7 +228,7 @@ export default async function BlogPage() {
                 </li>
                 <li>
                   <a
-                    href="https://linkedin.com/in/gianakbar"
+                    href="https://linkedin.com/in/giankbr"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center"

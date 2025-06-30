@@ -3,11 +3,13 @@
 import { GridBackground } from '@/components/grid-background';
 import SpotifyTracks from '@/components/spotify-tracks';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ChevronRight, Download, Github } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function HomeClient({ posts }: { posts: any[] }) {
   // Refs for animation targets
@@ -18,6 +20,12 @@ export default function HomeClient({ posts }: { posts: any[] }) {
   const footerRef = useRef(null);
   const codeBlockRef = useRef<HTMLDivElement>(null);
   const floatingElementsRef = useRef<HTMLDivElement[]>([]);
+
+  // State for Download CV modal
+  const [openCVModal, setOpenCVModal] = useState(false);
+  const [leadForm, setLeadForm] = useState({ name: '', email: '', message: '' });
+  const [formError, setFormError] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -192,6 +200,48 @@ export default function HomeClient({ posts }: { posts: any[] }) {
 
   const getRandomImage = () => `https://source.unsplash.com/600x300/?technology,web,random,${Math.floor(Math.random() * 10000)}`;
 
+  const handleLeadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLeadForm({ ...leadForm, [e.target.name]: e.target.value });
+  };
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadForm.name || !leadForm.email) {
+      setFormError('Please fill in all fields.');
+      return;
+    }
+    setFormError('');
+    setDownloading(true);
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadForm),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setFormError(data.error || 'Failed to save lead.');
+        setDownloading(false);
+        return;
+      }
+      // Success: trigger download
+      setOpenCVModal(false);
+      setLeadForm({ name: '', email: '', message: '' });
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = '/CV - Virgian Akbar - Fullstack Developer.pdf';
+        link.download = 'CV - Virgian Akbar - Fullstack Developer.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, 300);
+    } catch (err) {
+      setFormError('Server error.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -237,18 +287,93 @@ export default function HomeClient({ posts }: { posts: any[] }) {
 
               {/* CTA buttons with improved layout */}
               <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
-                <Button className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 py-6 text-lg flex items-center gap-2 group shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all">
-                  <span>Let's Talk</span>
-                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <Button
+                  asChild
+                  className="font-outfit bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 py-6 text-lg flex items-center gap-2 group shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all"
+                >
+                  <Link href="/contact">
+                    <span>Let's Talk</span>
+                    <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </Link>
                 </Button>
                 <Button
                   variant="outline"
                   className="font-outfit rounded-full px-7 py-6 text-lg border-zinc-300 dark:border-zinc-700 bg-white/80 dark:bg-black/50 backdrop-blur-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600 flex items-center gap-2"
+                  onClick={() => setOpenCVModal(true)}
                 >
                   <span>Download CV</span>
                   <Download className="w-5 h-5" />
                 </Button>
               </div>
+              {/* Download CV Modal */}
+              <Dialog open={openCVModal} onOpenChange={setOpenCVModal}>
+                <DialogContent className="max-w-md rounded-2xl p-8 bg-white dark:bg-zinc-900 shadow-2xl border-0">
+                  <div className="flex flex-col items-center text-center mb-7">
+                    <span className="text-4xl mb-1">👋</span>
+                    <h2 className="text-2xl md:text-3xl font-extrabold mb-2 text-zinc-900 dark:text-white">Interested in my CV?</h2>
+                    <p className="text-zinc-500 text-base mb-1">
+                      Isi form di bawah untuk dapatkan file resume terbaru saya.
+                      <br />
+                      <span className="text-yellow-500 font-semibold">Lebih suka ngobrol langsung?</span>{' '}
+                      <a href="https://linkedin.com/in/giankbr" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold underline">
+                        Connect via LinkedIn
+                      </a>
+                      !
+                    </p>
+                  </div>
+                  <form onSubmit={handleLeadSubmit} className="space-y-5">
+                    <div className="text-left">
+                      <label htmlFor="name" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
+                        Nama Lengkap <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={leadForm.name}
+                        onChange={handleLeadInput}
+                        required
+                        placeholder="Nama kamu"
+                        className="w-full h-11 px-4 text-base bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition"
+                      />
+                    </div>
+                    <div className="text-left">
+                      <label htmlFor="email" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
+                        Email Aktif <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={leadForm.email}
+                        onChange={handleLeadInput}
+                        required
+                        placeholder="email@kerja.com"
+                        className="w-full h-11 px-4 text-base bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition"
+                      />
+                    </div>
+                    <div className="text-left">
+                      <label htmlFor="message" className="block text-xs font-semibold mb-1 text-zinc-700 dark:text-zinc-200">
+                        Pesan / Keterangan
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={3}
+                        placeholder="Tulis pesan atau kebutuhanmu di sini..."
+                        className="w-full px-4 py-2 text-base bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition resize-none"
+                        value={leadForm.message || ''}
+                        onChange={(e) => setLeadForm({ ...leadForm, message: e.target.value })}
+                      />
+                    </div>
+                    {formError && <div className="text-red-500 text-sm text-left">{formError}</div>}
+                    <DialogFooter>
+                      <Button type="submit" className="w-full h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-md" disabled={downloading}>
+                        {downloading ? 'Mengirim...' : 'Kirim & Download CV'}
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Right illustration/image column */}
