@@ -506,7 +506,10 @@ export default function HomeClient({ posts }: { posts: any[] }) {
 
         {/* Spotify Section */}
         <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 spotify-section" ref={spotifyRef}>
-          <h2 className="text-3xl font-bold mb-10">My Music</h2>
+          <h2 className="text-3xl font-bold mb-2 flex gap-2">
+            <span>My Music</span>
+          </h2>
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8">Musik selalu menemani saya saat bekerja dan ngoding.</p>
           <SpotifyTracks />
         </div>
 

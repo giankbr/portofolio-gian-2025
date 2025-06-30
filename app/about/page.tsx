@@ -132,8 +132,8 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <div>
                     <h4 className="text-zinc-500 dark:text-zinc-400 text-sm mb-1">EMAIL</h4>
-                    <a href="mailto:gian@example.com" className="text-zinc-800 dark:text-zinc-300 hover:text-purple-600 dark:hover:text-purple-500 transition-colors">
-                      gian@example.com
+                    <a href="mailto:vakbarrr@gmail.com" className="text-zinc-800 dark:text-zinc-300 hover:text-purple-600 dark:hover:text-purple-500 transition-colors">
+                      vakbarrr@gmail.com
                     </a>
                   </div>
                   <div>
@@ -630,7 +630,7 @@ export default function AboutPage() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:gian@example.com" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
+                  <a href="mailto:vakbarrr@gmail.com" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
                     Email
                   </a>
                 </li>
