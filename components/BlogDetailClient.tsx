@@ -141,7 +141,23 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Cover Image */}
+        {post.coverImage && (
+          <div className="relative w-full h-[400px] mb-10 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/placeholder.jpg';
+              }}
+            />
+          </div>
+        )}
         {/* Author, date, title */}
         <div className="flex flex-row items-center gap-4 mb-8">
           <Image src={post.author?.avatar || '/fotofoto.jpeg'} alt={post.author?.name || 'Author'} width={56} height={56} className="rounded-full object-cover flex-shrink-0" />
@@ -181,11 +197,6 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
             <LinkIcon className="h-5 w-5" />
           </button>
         </div>
-        {post.coverImage && (
-          <div className="w-full mb-8">
-            <img src={post.coverImage} alt={post.title} className="w-full max-h-80 object-cover rounded-xl shadow-md border border-zinc-200 dark:border-zinc-800" />
-          </div>
-        )}
         <div className="flex flex-row gap-0">
           {/* Share sidebar for desktop */}
           <div className="hidden lg:flex flex-col items-center gap-4 sticky top-32 h-max mr-8 pt-2">

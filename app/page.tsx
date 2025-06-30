@@ -385,10 +385,10 @@ export default function Home() {
         <div className="py-16 border-t border-zinc-200 dark:border-zinc-800 blog-section" ref={projectsRef}>
           <div className="flex justify-between items-center mb-10">
             <h2 className="text-3xl font-bold">Latest Blog Posts</h2>
-            {/* <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-2 group">
+            <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-2 group">
               <span>View All</span>
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Link> */}
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
