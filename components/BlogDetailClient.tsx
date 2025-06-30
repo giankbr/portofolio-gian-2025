@@ -2,11 +2,13 @@
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, Linkedin, Link as LinkIcon, Twitter } from 'lucide-react';
+import 'highlight.js/styles/github-dark.css';
+import { Calendar, Check, Copy, Linkedin, Link as LinkIcon, Twitter } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentPropsWithoutRef, FC, useEffect, useRef } from 'react';
+import { ComponentPropsWithoutRef, FC, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
 
 interface BlogPost {
   slug: string;
@@ -36,7 +38,34 @@ const markdownComponents = {
   code: ({ node: _, ...props }: ComponentPropsWithoutRef<'code'> & { node?: any }) => (
     <code className="bg-zinc-100 dark:bg-zinc-800 rounded px-1.5 py-0.5 text-sm text-purple-600 dark:text-purple-400" {...props} />
   ),
-  pre: ({ node: _, ...props }: ComponentPropsWithoutRef<'pre'> & { node?: any }) => <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 my-6 overflow-x-auto" {...props} />,
+  pre: ({ node: _, children, ...props }: ComponentPropsWithoutRef<'pre'> & { node?: any }) => {
+    // Extract code string for copy
+    const code = typeof children === 'string' ? children : Array.isArray(children) ? children.map((child) => (typeof child === 'string' ? child : '')).join('') : '';
+    const [copied, setCopied] = useState(false);
+    const handleCopy = () => {
+      if (!code) return;
+      navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    };
+    return (
+      <div className="group relative my-6">
+        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 overflow-x-auto">
+          {/* Copy button */}
+          <button
+            type="button"
+            aria-label="Copy code"
+            onClick={handleCopy}
+            className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity bg-zinc-200 dark:bg-zinc-700 rounded p-1.5 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 shadow"
+            tabIndex={0}
+          >
+            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+          </button>
+          {children}
+        </pre>
+      </div>
+    );
+  },
   blockquote: ({ node: _, ...props }: ComponentPropsWithoutRef<'blockquote'> & { node?: any }) => (
     <blockquote className="border-l-4 border-purple-400 pl-4 italic text-zinc-600 dark:text-zinc-400 my-6" {...props} />
   ),
@@ -223,7 +252,9 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
             {/* Article content */}
             <article className="flex-1 w-full">
               <div ref={contentRef} className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-bold prose-p:text-zinc-600 dark:prose-p:text-zinc-400">
-                <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
+                <ReactMarkdown components={markdownComponents} rehypePlugins={[rehypeHighlight]}>
+                  {post.content}
+                </ReactMarkdown>
               </div>
             </article>
           </div>
