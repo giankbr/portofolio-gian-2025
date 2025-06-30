@@ -391,9 +391,14 @@ export default function ShortsPage() {
                       About
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                       Projects
+                    </Link>
+                  </li> */}
+                  <li>
+                    <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Blog
                     </Link>
                   </li>
                   <li>

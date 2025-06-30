@@ -1,152 +1,108 @@
-'use client';
-
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Project } from '@/types/project';
+import fs from 'fs';
+import matter from 'gray-matter';
+import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
+import { marked } from 'marked';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
-import GiscusComments from './GiscusComments';
+import { notFound } from 'next/navigation';
+import path from 'path';
 
-export default function ContactPage() {
-  const footerRef = useRef<HTMLElement>(null);
+interface ProjectDetailPageProps {
+  params: {
+    id: string;
+  };
+}
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Animate contact sections
-    gsap.fromTo(
-      '.contact-section',
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: 'power3.out',
-      }
-    );
-
-    // Animate contact methods
-    gsap.fromTo(
-      '.contact-method',
-      { opacity: 0, x: -20 },
-      {
-        scrollTrigger: {
-          trigger: '.contact-methods',
-          start: 'top 80%',
-        },
-        opacity: 1,
-        x: 0,
-        stagger: 0.15,
-        duration: 0.6,
-        ease: 'power2.out',
-      }
-    );
-
-    // Footer animation
-    gsap.fromTo(
-      '.footer-content',
-      { opacity: 0, y: 20 },
-      {
-        scrollTrigger: {
-          trigger: 'footer',
-          start: 'top 90%',
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      }
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
+export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
+  const { id } = params;
+  const filePath = path.join(process.cwd(), 'public/content/projects', `${id}.md`);
+  if (!fs.existsSync(filePath)) {
+    notFound();
+  }
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const { data, content } = matter(fileContents);
+  if (!data.title || !data.description) {
+    notFound();
+  }
+  const project: Project = {
+    id: data.id || Number(id),
+    title: data.title,
+    description: data.description,
+    longDescription: content,
+    tags: data.tags || [],
+    image: data.image || '/placeholder.svg',
+    github: data.github || '',
+    demo: data.demo || '',
+    featured: data.featured || false,
+  };
+  const htmlContent = marked.parse(content);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 contact-section">Get in Touch</h1>
-        <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mb-16 contact-section">
-          I'm always open to new opportunities and collaborations. Feel free to leave a comment below or reach out directly through my contact information.
-        </p>
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back Button */}
+        <div className="mb-8">
+          <Link href="/projects" className="inline-flex items-center text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-500 transition-colors">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            <span>Back to all projects</span>
+          </Link>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-          {/* Giscus Comments Section */}
-          <div className="md:col-span-2 contact-section">
-            <div className="bg-zinc-50 dark:bg-zinc-900/50 p-6 md:p-8 rounded-xl">
-              <h2 className="text-2xl font-bold mb-6">Leave a Comment</h2>
-              <GiscusComments />
-            </div>
+        {/* Project Image */}
+        <div className="relative aspect-[16/9] w-full mb-10 rounded-xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800">
+          <img src={project.image || '/placeholder.svg?height=400&width=800'} alt={project.title} className="w-full h-full object-cover" />
+        </div>
+
+        {/* Project Header */}
+        <div className="mb-10 text-center">
+          <div className="flex flex-wrap gap-2 mb-6 justify-center">
+            {project.tags.map((tag) => (
+              <span key={tag} className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full font-medium">
+                {tag}
+              </span>
+            ))}
           </div>
-
-          {/* Contact Info */}
-          <div className="space-y-8 contact-section">
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-              <div className="space-y-6 contact-methods">
-                <div className="flex items-start gap-4 contact-method">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-full">
-                    <Mail className="w-5 h-5 text-purple-600 dark:text-purple-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">EMAIL</h3>
-                    <a href="mailto:gian@example.com" className="text-lg hover:text-purple-600 dark:hover:text-purple-500 transition-colors">
-                      gian@example.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 contact-method">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-full">
-                    <Phone className="w-5 h-5 text-purple-600 dark:text-purple-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">PHONE</h3>
-                    <a href="tel:+6281234567890" className="text-lg hover:text-purple-600 dark:hover:text-purple-500 transition-colors">
-                      +62 812 3456 7890
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 contact-method">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-full">
-                    <MapPin className="w-5 h-5 text-purple-600 dark:text-purple-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">LOCATION</h3>
-                    <p className="text-lg">Jakarta, Indonesia</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-2xl font-bold mb-6">Follow Me</h3>
-              <div className="flex gap-4">
-                {/* Social media links */}
-                <Link
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-full hover:bg-purple-100 dark:hover:bg-purple-900/20 transition-colors"
-                >
-                  <svg className="w-5 h-5 text-zinc-700 dark:text-zinc-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
-                    />
-                  </svg>
-                </Link>
-                {/* Other social links remain the same */}
-              </div>
-            </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-zinc-900 dark:text-white leading-tight">{project.title}</h1>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto leading-relaxed">{project.description}</p>
+          <div className="flex flex-wrap gap-4 justify-center mb-2">
+            {project.demo && (
+              <a href={project.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2 group">
+                  <span>Live Demo</span>
+                  <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </Button>
+              </a>
+            )}
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Github className="w-4 h-4" />
+                  <span>View Code</span>
+                </Button>
+              </a>
+            )}
           </div>
         </div>
-      </div>
 
+        {/* Project Content */}
+        <div
+          className="
+            prose prose-zinc max-w-none dark:prose-invert
+            prose-headings:font-extrabold
+            prose-h1:text-3xl md:prose-h1:text-5xl prose-h1:mb-6 prose-h1:mt-10 prose-h1:text-center
+            prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-10 prose-h2:text-purple-700 dark:prose-h2:text-purple-400 prose-h2:text-center
+            prose-h3:text-xl md:prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-8
+            prose-p:text-lg prose-p:leading-relaxed prose-p:mb-4 prose-p:text-zinc-700 dark:prose-p:text-zinc-300
+            prose-ul:pl-6 prose-li:mb-2 prose-li:marker:text-purple-500
+            prose-blockquote:bg-zinc-50 dark:prose-blockquote:bg-zinc-800 prose-blockquote:border-l-purple-400 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:my-6
+            prose-code:bg-zinc-100 dark:prose-code:bg-zinc-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-purple-600 dark:prose-code:text-purple-400
+            prose-pre:bg-zinc-100 dark:prose-pre:bg-zinc-800 prose-pre:rounded-lg prose-pre:p-4 prose-pre:my-6
+            bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800 p-8 mb-12 mx-auto
+          "
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
+      </div>
       <footer className="bg-white dark:bg-zinc-900/20 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
@@ -177,11 +133,11 @@ export default function ContactPage() {
                     About
                   </Link>
                 </li>
-                {/* <li>
+                <li>
                   <Link href="/projects" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
                     Projects
                   </Link>
-                </li> */}
+                </li>
                 <li>
                   <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
                     Blog
