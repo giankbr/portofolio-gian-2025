@@ -19,6 +19,10 @@ export default function NowPlaying() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
+  // Equalizer animation state
+  const EQUALIZER_BARS = 6;
+  const [barHeights, setBarHeights] = useState<number[]>(Array(EQUALIZER_BARS).fill(8));
+
   useEffect(() => {
     async function fetchNowPlaying() {
       setLoading(true);
@@ -56,6 +60,27 @@ export default function NowPlaying() {
     return () => cancelAnimationFrame(raf);
   }, [data.isPlaying, data.progressMs, data.durationMs]);
 
+  useEffect(() => {
+    if (!data.isPlaying) {
+      setBarHeights(Array(EQUALIZER_BARS).fill(8));
+      return;
+    }
+    let raf: number;
+    const start = Date.now();
+    function animate() {
+      const t = (Date.now() - start) / 500; // speed factor
+      setBarHeights(
+        Array.from({ length: EQUALIZER_BARS }, (_, i) => {
+          // Sine wave with phase offset for each bar, reduced amplitude
+          return 16 + Math.abs(Math.sin(t + i)) * 8; // amplitude reduced from 24 to 8
+        })
+      );
+      raf = requestAnimationFrame(animate);
+    }
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [data.isPlaying]);
+
   function msToTime(ms?: number) {
     if (!ms) return '0:00';
     const min = Math.floor(ms / 60000);
@@ -70,21 +95,6 @@ export default function NowPlaying() {
       <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.062 14.583c-.248 0-.403-.137-.662-.27-1.767-.914-3.988-1.134-6.608-.616-.241.055-.403.082-.541.082-.403 0-.713-.302-.713-.705 0-.378.248-.651.568-.706 3.102-.624 5.704-.357 7.894.95.289.179.434.344.434.705 0 .403-.31.56-.372.56zm.94-2.627c-.303 0-.496-.165-.8-.329-2.016-1.05-5.076-1.35-7.636-.742-.303.068-.496.096-.661.096-.496 0-.868-.372-.868-.868 0-.462.303-.8.696-.868 3.102-.661 6.608-.33 9.102.951.372.22.537.427.537.868 0 .496-.372.892-.37.892zm.855-2.816c-.365 0-.6-.192-.974-.384-2.281-1.188-6.048-1.298-8.22-.715-.365.096-.6.124-.808.124-.6 0-1.048-.448-1.048-1.048 0-.565.365-.972.848-1.072 2.588-.675 6.826-.548 9.612.844.448.268.662.524.662 1.048 0 .6-.448 1.203-1.072 1.203z" />
     </svg>
   );
-
-  const EqualizerBar = ({ delay }: { delay: number }) => {
-    const [height, setHeight] = useState(20);
-    useEffect(() => {
-      if (!data.isPlaying) {
-        setHeight(8);
-        return;
-      }
-      const interval = setInterval(() => {
-        setHeight(Math.random() * 32 + 8);
-      }, 300 + delay * 100);
-      return () => clearInterval(interval);
-    }, [data.isPlaying, delay]);
-    return <div className="w-1 bg-gradient-to-t from-purple-600 to-pink-500 rounded-full transition-all duration-300 ease-out" style={{ height: `${height}px` }} />;
-  };
 
   const renderAlbumArt = () => {
     if (loading) {
@@ -108,6 +118,10 @@ export default function NowPlaying() {
       </div>
     );
   };
+
+  const EqualizerBar = ({ height }: { height: number }) => (
+    <div className="w-1 bg-gradient-to-t from-purple-600 to-pink-500 rounded-full transition-all duration-200 ease-out" style={{ height: `${height}px` }} />
+  );
 
   return (
     <div className="w-full">
@@ -134,8 +148,8 @@ export default function NowPlaying() {
               <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{data.album}</p>
               {/* Equalizer */}
               <div className="flex items-end gap-1 pt-2">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
-                  <EqualizerBar key={i} delay={i} />
+                {barHeights.map((height, i) => (
+                  <EqualizerBar key={i} height={height} />
                 ))}
               </div>
               {/* Progress Bar (Real) */}
