@@ -1,11 +1,9 @@
 ---
 title: 'Tutorial Install Docker di Linux, Mac, dan Windows'
 date: '2025-06-30'
-coverImage: '/placeholder.jpg'
+coverImage: '/thumbnail/tutorial-install-docker.png'
 excerpt: 'Panduan lengkap cara install Docker di Linux, Mac, dan Windows, beserta tips troubleshooting.'
 ---
-
-# Tutorial Install Docker di Linux, Mac, dan Windows
 
 Docker adalah platform containerization yang memudahkan proses deploy aplikasi di berbagai environment. Berikut panduan lengkap instalasi Docker di berbagai sistem operasi.
 

@@ -19,10 +19,6 @@ export default function NowPlaying() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  // Equalizer animation state
-  const EQUALIZER_BARS = 6;
-  const [barHeights, setBarHeights] = useState<number[]>(Array(EQUALIZER_BARS).fill(8));
-
   useEffect(() => {
     async function fetchNowPlaying() {
       setLoading(true);
@@ -59,27 +55,6 @@ export default function NowPlaying() {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [data.isPlaying, data.progressMs, data.durationMs]);
-
-  useEffect(() => {
-    if (!data.isPlaying) {
-      setBarHeights(Array(EQUALIZER_BARS).fill(8));
-      return;
-    }
-    let raf: number;
-    const start = Date.now();
-    function animate() {
-      const t = (Date.now() - start) / 500; // speed factor
-      setBarHeights(
-        Array.from({ length: EQUALIZER_BARS }, (_, i) => {
-          // Sine wave with phase offset for each bar, reduced amplitude
-          return 16 + Math.abs(Math.sin(t + i)) * 8; // amplitude reduced from 24 to 8
-        })
-      );
-      raf = requestAnimationFrame(animate);
-    }
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [data.isPlaying]);
 
   function msToTime(ms?: number) {
     if (!ms) return '0:00';
@@ -119,10 +94,6 @@ export default function NowPlaying() {
     );
   };
 
-  const EqualizerBar = ({ height }: { height: number }) => (
-    <div className="w-1 bg-gradient-to-t from-purple-600 to-pink-500 rounded-full transition-all duration-200 ease-out" style={{ height: `${height}px` }} />
-  );
-
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row items-center gap-6 p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
@@ -146,12 +117,6 @@ export default function NowPlaying() {
               </a>
               <p className="text-sm text-zinc-600 dark:text-zinc-300 truncate mt-0.5">{data.artist}</p>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{data.album}</p>
-              {/* Equalizer */}
-              <div className="flex items-end gap-1 pt-2">
-                {barHeights.map((height, i) => (
-                  <EqualizerBar key={i} height={height} />
-                ))}
-              </div>
               {/* Progress Bar (Real) */}
               {data.durationMs && (
                 <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
