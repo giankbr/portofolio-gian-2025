@@ -111,7 +111,7 @@ export default function AboutPage() {
                   {/* Main image with shadow instead of colored border */}
                   <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800 rounded-2xl shadow-lg"></div>
                   <div className="absolute inset-1 bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-inner">
-                    <Image src="/fotofoto.jpeg" alt="Gian Akbar" width={500} height={500} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" priority />
+                    <Image src="/profile.jpg" alt="Gian Akbar" width={500} height={500} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" priority />
                   </div>
                 </div>
 
