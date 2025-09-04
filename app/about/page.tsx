@@ -354,21 +354,226 @@ export default function AboutPage() {
       </section>
 
       {/* Experience Timeline - Modern Design */}
-      <section className="py-16 timeline-container">
+      <section className="py-16 bg-zinc-50/50 dark:bg-zinc-900/20 timeline-container">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Experience Timeline</h2>
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-sm font-medium mb-4">My Journey</span>
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-500 dark:to-indigo-400 bg-clip-text text-transparent">Experience Timeline</h2>
             <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">My professional journey from education to where I am today.</p>
           </div>
 
-          <div className="relative border-l-2 border-purple-600 dark:border-purple-500 ml-4 md:ml-6 pl-8 md:pl-12 space-y-10">
+          {/* Timeline with all items on the left side for desktop */}
+          <div className="hidden lg:block">
+            <div className="relative">
+              {/* Left line instead of center */}
+              <div className="absolute left-8 h-full w-1 bg-gradient-to-b from-purple-600 to-indigo-500 rounded-full"></div>
+
+              {/* Timeline Items - All on the left */}
+              <div className="space-y-24">
+                {/* Current Job */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Current</span>
+                        <time className="text-sm text-purple-600 dark:text-purple-500 font-medium">Jul 2024 - Present</time>
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Full-Stack Web Developer</h3>
+                      <p className="text-lg text-purple-600 dark:text-purple-500 mb-4">PT Morfogenesis Teknologi Indonesia</p>
+                      <div className="text-zinc-600 dark:text-zinc-400 space-y-3 text-base">
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Lead development and maintenance of multiple client websites, ensuring optimal performance and user experience</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Lead development of custom CMS platforms using Laravel and React to manage dynamic content</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Lead development of backend systems using NestJS for enterprise-level platforms (e.g., Talenta)</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Built service portal backend using Express.js for Pelayanan Terpadu Satu Pintu (PTSP)</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Built and integrated custom Telegram bots to automate client communication flows</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Developed a dynamic document management system with automatic document numbering</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <Briefcase className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Previous Job */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <time className="text-sm text-purple-600 dark:text-purple-500 font-medium block mb-4">Dec 2023 - Aug 2024</time>
+                      <h3 className="text-xl font-bold mb-2">Full-Stack Web Developer</h3>
+                      <p className="text-lg text-purple-600 dark:text-purple-500 mb-4">PT Esha Parama Technology</p>
+                      <div className="text-zinc-600 dark:text-zinc-400 space-y-3 text-base">
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Assigned into PT Sayap Mas Utama</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Developing RESTful APIs for Human Resources module using Java, improving efficiency of HR operations</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Built and maintained responsive web interfaces using Joomla CMS, integrating seamlessly with backend APIs</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <Briefcase className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Previous Job */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <time className="text-sm text-purple-600 dark:text-purple-500 font-medium block mb-4">Aug 2022 - Nov 2023</time>
+                      <h3 className="text-xl font-bold mb-2">Full-Stack Web Developer</h3>
+                      <p className="text-lg text-purple-600 dark:text-purple-500 mb-4">NOTCH Digital Agency</p>
+                      <div className="text-zinc-600 dark:text-zinc-400 space-y-3 text-base">
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Designed and built responsive, mobile-friendly websites using HTML, CSS, and PHP Frameworks</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Developed and maintained the Support UNICEF Indonesia website for managing donations</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Built and managed websites for Cepat Paramex and Mangkunegaran RUN</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Provided ongoing maintenance and support for client websites, ensuring high availability and performance</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <Briefcase className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Education Milestone */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 shadow-md border border-purple-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <time className="text-sm text-purple-600 dark:text-purple-500 font-medium block mb-4">Oct 2022</time>
+                      <h3 className="text-xl font-bold mb-2">Graduation from School</h3>
+                      <p className="text-zinc-600 dark:text-zinc-400 flex items-start gap-2">
+                        <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                        <span>I finished my school and was ready to work full-time.</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <GraduationCap className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Internship */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <time className="text-sm text-purple-600 dark:text-purple-500 font-medium block mb-4">Jan 2022 - Jul 2022</time>
+                      <h3 className="text-xl font-bold mb-2">Back-end Developer</h3>
+                      <p className="text-lg text-purple-600 dark:text-purple-500 mb-4">Telkom Direktorat Digital Business - Internship</p>
+                      <div className="text-zinc-600 dark:text-zinc-400 space-y-3 text-base">
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Developed a Knowledge Repository using Node.js and Restify, facilitating efficient information management and retrieval</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Participated in code reviews and contributed to the development of comprehensive software documentation</span>
+                        </p>
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>Maintenance website Innovation Day</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <Briefcase className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Internship */}
+                <div className="timeline-item relative flex">
+                  <div className="w-11/12 pl-20">
+                    <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <time className="text-sm text-purple-600 dark:text-purple-500 font-medium block mb-4">Feb 2021 - Aug 2021</time>
+                      <h3 className="text-xl font-bold mb-2">Web Developer</h3>
+                      <p className="text-lg text-purple-600 dark:text-purple-500 mb-4">PERUM Bulog - Internship</p>
+                      <div className="text-zinc-600 dark:text-zinc-400 space-y-3 text-base">
+                        <p className="flex items-start gap-2">
+                          <span className="text-purple-600 dark:text-purple-500 mt-1 shrink-0">•</span>
+                          <span>At Perum Bulog, I was responsible for internal web applications using PHP, Bootstrap and jQuery</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Left icon instead of center */}
+                  <div className="absolute left-8 transform -translate-x-1/2 -translate-y-1/4 z-10">
+                    <div className="bg-zinc-900 dark:bg-black p-4 rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                      <Briefcase className="w-7 h-7 text-white dark:text-purple-500" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile timeline - Vertical line */}
+          <div className="lg:hidden relative border-l-2 border-purple-600 dark:border-purple-500 ml-8 md:ml-10 pl-10 md:pl-14 space-y-12 pr-4 sm:pr-6 md:pr-8 pb-6">
             {/* Current Job */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 md:p-7 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h3 className="text-xl font-bold">Full-Stack Web Developer</h3>
                   <div className="mt-2 md:mt-0 flex items-center">
@@ -377,56 +582,113 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">Morfotech</p>
-                <p className="text-zinc-600 dark:text-zinc-400">
-                  My main focus is on building web applications with Laravel, Express and React JS. I'm assigned to develop the company's client web applications.
-                </p>
+                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">PT Morfogenesis Teknologi Indonesia</p>
+                <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Lead development and maintenance of multiple client websites, ensuring optimal performance and user experience</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Lead development of custom CMS platforms using Laravel and React to manage dynamic content</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Lead development of backend systems using NestJS for enterprise-level platforms (e.g., Talenta)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Built service portal backend using Express.js for Pelayanan Terpadu Satu Pintu (PTSP)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Built and integrated custom Telegram bots to automate client communication flows</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Developed a dynamic document management system with automatic document numbering</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             {/* Previous Job */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 md:p-7 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h3 className="text-xl font-bold">Full-Stack Web Developer</h3>
                   <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Dec 2023 - Aug 2024</time>
                 </div>
 
-                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">Esha Parama Technology</p>
-                <p className="text-zinc-600 dark:text-zinc-400">My main focus was on building web applications with Java and PHP. I was assigned to develop the company's internal web applications.</p>
+                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">PT Esha Parama Technology</p>
+                <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Assigned into PT Sayap Mas Utama</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Developing RESTful APIs for Human Resources module using Java, improving efficiency of HR operations</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Built and maintained responsive web interfaces using Joomla CMS, integrating seamlessly with backend APIs</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             {/* Previous Job */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 md:p-7 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h3 className="text-xl font-bold">Full-Stack Web Developer</h3>
-                  <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Aug 2022 - Dec 2023</time>
+                  <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Aug 2022 - Nov 2023</time>
                 </div>
 
-                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">Notch</p>
-                <p className="text-zinc-600 dark:text-zinc-400">
-                  My main focus was on building web applications with PHP, Bootstrap and jQuery. I also worked on the maintenance of the company's client websites.
-                </p>
+                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">NOTCH Digital Agency</p>
+                <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Designed and built responsive, mobile-friendly websites using HTML, CSS, and PHP Frameworks</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Developed and maintained the Support UNICEF Indonesia website for managing donations</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Built and managed websites for Cepat Paramex and Mangkunegaran RUN</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Provided ongoing maintenance and support for client websites, ensuring high availability and performance</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             {/* Education Milestone */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <GraduationCap className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <GraduationCap className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 shadow-sm border border-purple-100 dark:border-zinc-800">
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 md:p-7 shadow-md border border-purple-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h3 className="text-xl font-bold">Graduation from School</h3>
                   <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Oct 2022</time>
@@ -438,35 +700,57 @@ export default function AboutPage() {
 
             {/* Internship */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 md:p-7 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                  <h3 className="text-xl font-bold">Software Engineer</h3>
-                  <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Jan 2022 - Jun 2022</time>
+                  <h3 className="text-xl font-bold">Back-end Developer</h3>
+                  <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Jan 2022 - Jul 2022</time>
                 </div>
 
-                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">Telkom Indonesia - Internship</p>
-                <p className="text-zinc-600 dark:text-zinc-400">I handled the development of the company's internal web applications using Node.js.</p>
+                <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">Telkom Direktorat Digital Business - Internship</p>
+                <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Developed a Knowledge Repository using Node.js and Restify, facilitating efficient information management and retrieval</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Participated in code reviews and contributed to the development of comprehensive software documentation</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>Maintenance website Innovation Day</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             {/* Internship */}
             <div className="timeline-item relative">
-              <div className="absolute -left-[26px] md:-left-[30px] p-2 bg-white dark:bg-black rounded-full border-2 border-purple-600">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+              <div className="absolute -left-[26px] md:-left-[31px] p-3 bg-white dark:bg-black rounded-full border-2 border-purple-600 dark:border-purple-500 shadow-md">
+                <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-500" />
               </div>
 
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 md:p-7 shadow-md border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h3 className="text-xl font-bold">Web Developer</h3>
                   <time className="mt-2 md:mt-0 text-sm text-purple-600 dark:text-purple-500 font-medium">Feb 2021 - Aug 2021</time>
                 </div>
 
                 <p className="text-lg text-purple-600 dark:text-purple-500 mb-3">PERUM Bulog - Internship</p>
-                <p className="text-zinc-600 dark:text-zinc-400">At Perum Bulog, I was responsible for internal web applications using PHP, Bootstrap and jQuery.</p>
+                <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 mr-2 mt-1">•</span>
+                      <span>At Perum Bulog, I was responsible for internal web applications using PHP, Bootstrap and jQuery</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -563,7 +847,7 @@ export default function AboutPage() {
             <div className="hidden md:block md:col-span-1 lg:col-span-2"></div>
             <div className="md:col-span-3">
               <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Navigation</h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 <li>
                   <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
                     Home
@@ -589,7 +873,7 @@ export default function AboutPage() {
             </div>
             <div className="md:col-span-3">
               <h3 className="text-sm font-semibold text-zinc-800 dark:text-white uppercase tracking-wider mb-4">Connect</h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 <li>
                   <a
                     href="https://github.com/giankbr"
