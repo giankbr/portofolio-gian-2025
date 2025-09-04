@@ -509,7 +509,7 @@ export default function HomeClient({ posts }: { posts: any[] }) {
           <h2 className="text-3xl font-bold mb-2 flex gap-2">
             <span>My Music</span>
           </h2>
-          <p className="text-zinc-600 dark:text-zinc-400 mb-8">Musik selalu menemani saya saat bekerja dan ngoding.</p>
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8">Music always accompanies me when I'm working and coding.</p>
           <SpotifyTracks />
         </div>
 
