@@ -7,7 +7,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="dark"
       enableSystem={true}
       storageKey="gian-portfolio-theme" // Add this to ensure consistent storage key
       disableTransitionOnChange={false} // Smooth transitions

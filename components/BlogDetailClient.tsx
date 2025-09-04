@@ -296,16 +296,6 @@ const BlogDetailClient: FC<{ post: BlogPost }> = ({ post }) => {
                 </Link>
               </li> */}
                 <li>
-                  <Link href="/blog" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/shorts" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
-                    Shorts
-                  </Link>
-                </li>
-                <li>
                   <Link href="/gear" className="text-zinc-600 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center">
                     Gear
                   </Link>
